@@ -17,6 +17,7 @@
 # misc
 /frontend/.DS_Store
 /frontend/*.pem
+.DS_Store
 
 # local env files
 /frontend/.env.local
