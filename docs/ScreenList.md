@@ -37,4 +37,4 @@ URL: /users/password/reset/complete
 URL: /users/email/reset/form
 
 ### メール確認案内画面
-URL: /semd/email/confirm
+URL: /confirm/email
