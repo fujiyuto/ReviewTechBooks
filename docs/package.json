@@ -1,0 +1,11 @@
+{
+  "name": "docs",
+  "private": true,
+  "scripts": {
+    "gen:types": "openapi-typescript openapi.yml -o ../frontend/types/api.d.ts && openapi-typescript openapi.yml -o ../backend/types/api.d.ts"
+  },
+  "devDependencies": {
+    "openapi-typescript": "^7.13.0",
+    "typescript": "^5.9.3"
+  }
+}
