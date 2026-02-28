@@ -1,16 +1,16 @@
 # 画面一覧
 
 ### 書籍一覧画面（TOP）
-URL: /book
+URL: /books
 
 ### 書籍詳細画面
-URL: /book/{bookId}
+URL: /books{bookId}
 
 ### レビュー投稿画面
-URL: /review/create
+URL: /reviews/create
 
 ### レビュー編集画面
-URL: /review/edit/{reviewId}
+URL: /reviews/edit/{reviewId}
 
 ### ユーザー詳細画面
 URL: /users/{userId}
