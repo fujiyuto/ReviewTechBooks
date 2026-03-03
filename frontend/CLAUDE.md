@@ -2,86 +2,55 @@
 
 Frontend 固有のガイダンスです。共通事項はリポジトリルートの `CLAUDE.md` を参照してください。
 
-## 設計原則
-- Atomic Design: コンポーネントの再利用性を高めるため
-- Custom Hooks: ビジネスロジックとUIを分離
+## 技術スタック
+
+- React 19 + React Router v7
+- Vite v6
+- TailwindCSS v4
+- TypeScript 5.x
+
+## ディレクトリ構成
+
+```
+frontend/
+├── index.html          # Vite エントリ HTML
+├── main.tsx            # React エントリポイント
+├── App.tsx             # ルーター設定（BrowserRouter + Routes）
+├── vite.config.ts      # Vite 設定
+├── vite-env.d.ts       # Vite 型参照
+├── app/                # ページコンポーネント（Next.js の app/ に相当する命名を維持）
+│   ├── globals.css
+│   ├── page.tsx        → /
+│   ├── books/
+│   │   ├── page.tsx        → /books
+│   │   └── [bookId]/page.tsx → /books/:bookId
+│   └── ...
+├── components/         # 共通コンポーネント
+├── hooks/              # カスタムフック
+├── api/                # API クライアント
+└── types/              # 自動生成型定義
+```
+
+## ルーティング
+
+React Router v7 (library mode) を使用。ルート定義は `App.tsx` に集約。
+パスパラメータは `useParams()` フックで取得。
+
+## 環境変数
+
+Vite の規約に従い `VITE_` プレフィックスを使用。
+コード内では `import.meta.env.VITE_XXX` でアクセス。
 
 ## コマンド
 
 `frontend/` ディレクトリ内で実行してください。
-
 ```sh
-pnpm dev          # next dev
-pnpm build        # next build
-pnpm lint         # eslint（eslint-config-next）
+pnpm dev          # vite（開発サーバー）
+pnpm build        # vite build
+pnpm preview      # vite preview
+pnpm lint         # eslint
 pnpm typecheck    # tsc --noEmit
 pnpm format:check # prettier チェック
 pnpm test         # vitest実行
 pnpm test --watch # vitest ウォッチモード（開発中に便利）
 ```
-
-テスト設定は `vitest.config.mts` で管理している。
-
-## コンポーネント
-
-以下のディレクトリにコンポーネントを作成する。
-
-| ディレクトリ | 役割 | 備考 |
-|---|---|---|
-| `components/ui/` | 汎用的なUIパーツ | ボタン・インプットなど再利用性の高いコンポーネント |
-| `components/features/` | 機能単位のコンポーネント | 機能ごとにサブディレクトリを作成（例: `features/users/`） |
-| `components/layouts/` | レイアウト系 | ヘッダー・フッターなどページ全体の構造に関わるコンポーネント |
-
-テストファイルはコロケーション方式で対象ファイルと同じディレクトリに配置し、ファイル名は`*.test.tsx`とする。
-
-## カスタムロジック
-
-以下のディレクトリにカスタムロジックを作成する。
-
-| ディレクトリ | 役割 | 備考 |
-|---|---|---|
-| `hooks/` | カスタムフック | 機能ごとにファイルを作成（例: `useUsers.ts`） |
-| `api/` | APIリクエスト処理 | 機能ごとにファイルを作成（例: `users.ts`） |
-| `utils/` | 共通ロジック | |
-
-テストファイルはコロケーション方式で対象ファイルと同じディレクトリに配置し、ファイル名は`*.test.ts`とする。
-
-## テスト
-
-### コンポーネント
-
-コンポーネント作成時、以下の観点を確認するテストを作成する。
-- **レンダリング**: propsに応じて期待するテキスト・要素が表示されるか
-- **条件分岐**: propsや状態の違いによって表示が切り替わるか
-- **インタラクション**: クリックや入力などの操作後にUIが期待通りに変化するか
-- **エッジケース**: null・空配列・undefinedなど境界値で表示が崩れないか
-
-### カスタムロジック
-
-#### `hooks/`配下のテスト
-
-以下の観点を確認するテストを作成する。  
-APIリクエストを投げる部分についてはモックに差し替えてテストを行う。
-
-- **正常系**: レスポンスに応じてデータが正しく返されるか
-- **ローディング状態**: フェッチ中にloading状態がtrueになるか
-- **エラー状態**: APIエラー時にerror状態が正しくセットされるか
-- **引数の反映**: 渡したパラメータがAPIリクエストに正しく使われるか
-
-#### `api/`配下のテスト
-
-以下の観点を確認するテストを作成する。
-APIリクエストを投げる部分についてはモックに差し替えてテストを行う。
-
-- **正常系**: 正しいエンドポイントにリクエストが送られ、レスポンスが期待する形に変換されるか
-- **引数の反映**: 渡したパラメータがURLやリクエストボディに正しく含まれるか
-- **エラーハンドリング**: APIがエラーを返したときに適切にエラーがスローされるか
-- **ヘッダー**: 認証が必要なエンドポイントでAuthorizationヘッダーが正しくセットされるか
-
-#### `utils/`配下のテスト
-
-以下の観点を確認するテストを作成する。
-
-- **正常系**: 期待する入力に対して期待する出力が返されるか
-- **エッジケース**: null・空文字・境界値などで正しく動作するか
-- **異常系**: 不正な入力に対してエラーが適切にスローされるか

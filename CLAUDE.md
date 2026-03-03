@@ -6,11 +6,18 @@
 
 ## プロジェクト概要
 
-ReviewTechBooks は技術書レビュープラットフォームです。`backend/` と `frontend/` を持つモノレポ構成で、それぞれ独自の `node_modules` と pnpm ワークスペースを持ちます。
+ReviewTechBooks は技術書レビュープラットフォームです。自分が感じた課題である、「自分に合った技術書を見つける」といった点に焦点を当てたサービスです。  
+技術書を読んだことがある、または読んだユーザーは技術書のレビューを投稿し、他のユーザーが自分の目的に沿った技術書の検索を助けます。
+
+`backend/` と `frontend/` を持つモノレポ構成で、それぞれ独自の `node_modules` と pnpm ワークスペースを持ちます。
 
 - **Backend**: Hono フレームワーク（Node.js）、`http://localhost:8000` で起動
 - **Frontend**: Next.js 16（App Router）+ React 19 + Tailwind CSS v4、`http://localhost:3000` で起動
 - **認証**: Supabase Auth（JWT Bearer トークン）
+
+## ターゲットユーザー
+
+技術書のレビューを行うプラットフォームのため、エンジニアまたはITに興味のあるユーザーを対象としている。
 
 ## クイックスタート
 
