@@ -227,7 +227,7 @@ export interface paths {
                     /** @description 著者名 */
                     author?: components["parameters"]["Author"];
                     /** @description 出版社名 */
-                    published_by?: components["parameters"]["PublishedBy"];
+                    publishedBy?: components["parameters"]["PublishedBy"];
                     page?: components["parameters"]["Page"];
                     limit?: components["parameters"]["Limit"];
                 };
@@ -246,7 +246,9 @@ export interface paths {
                         "application/json": {
                             books?: components["schemas"]["BookSummary"][];
                             total?: number;
-                            page?: number;
+                            currentPage?: number;
+                            /** @description 総ページ数 */
+                            totalPages?: number;
                             limit?: number;
                             /** @description 次のページが存在するか */
                             next?: boolean;

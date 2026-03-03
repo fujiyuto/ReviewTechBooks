@@ -1,9 +1,8 @@
-type Props = {
-  params: Promise<{ bookId: string }>
-}
+import { useParams } from 'react-router-dom'
 
-export default async function BookDetailPage({ params }: Props) {
-  const { bookId } = await params
+/** 書籍詳細ページ */
+export default function BookDetailPage() {
+  const { bookId } = useParams<{ bookId: string }>()
 
   return (
     <main>

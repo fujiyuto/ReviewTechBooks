@@ -185,8 +185,11 @@ paths:
                       $ref: '#/components/schemas/BookSummary'
                   total:
                     type: integer
-                  page:
+                  currentPage:
                     type: integer
+                  totalPages:
+                    type: integer
+                    description: 総ページ数
                   limit:
                     type: integer
                   next:
@@ -406,7 +409,7 @@ components:
       schema:
         type: string
     PublishedBy:
-      name: published_by
+      name: publishedBy
       in: query
       description: 出版社名
       schema:
