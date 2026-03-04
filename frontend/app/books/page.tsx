@@ -135,9 +135,7 @@ export default function BookListPage() {
               前ページ
             </Link>
           ) : (
-            <span className="opacity-50 cursor-not-allowed">
-              前ページ
-            </span>
+            <span className="opacity-50 cursor-not-allowed">前ページ</span>
           )}
           <span className="px-3 text-sm text-text-secondary">
             {currentPage} ページ
@@ -153,9 +151,7 @@ export default function BookListPage() {
               次ページ
             </Link>
           ) : (
-            <span className="opacity-50 cursor-not-allowed">
-              次ページ
-            </span>
+            <span className="opacity-50 cursor-not-allowed">次ページ</span>
           )}
         </div>
       )}

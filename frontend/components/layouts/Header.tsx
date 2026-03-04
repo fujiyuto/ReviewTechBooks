@@ -16,10 +16,7 @@ export function Header() {
             ReviewTechBooks
           </Link>
           <nav className="flex items-center gap-4">
-            <Link
-              to="/books"
-              className="text-sm font-medium hover:opacity-80"
-            >
+            <Link to="/books" className="text-sm font-medium hover:opacity-80">
               書籍一覧
             </Link>
             <Link

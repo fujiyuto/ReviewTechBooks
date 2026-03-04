@@ -102,7 +102,11 @@ describe('BookListPage', () => {
   })
 
   it('shows prev page navigation as link when hasPrev is true', () => {
-    mockUseBooks.mockReturnValue({ ...defaultHookResult, currentPage: 2, hasPrev: true })
+    mockUseBooks.mockReturnValue({
+      ...defaultHookResult,
+      currentPage: 2,
+      hasPrev: true,
+    })
     renderPage()
     // hasPrev=true のとき、前ページは <a> (Link) でレンダリングされる
     const prevEl = screen.getByText('前ページ')
