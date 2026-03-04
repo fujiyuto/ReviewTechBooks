@@ -1,9 +1,7 @@
-type Props = {
-  params: Promise<{ userId: string }>
-}
+import { useParams } from 'react-router-dom'
 
-export default async function UserDetailPage({ params }: Props) {
-  const { userId } = await params
+export default function UserDetailPage() {
+  const { userId } = useParams<{ userId: string }>()
 
   return (
     <main>

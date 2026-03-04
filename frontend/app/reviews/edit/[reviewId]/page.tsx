@@ -1,9 +1,7 @@
-type Props = {
-  params: Promise<{ reviewId: string }>
-}
+import { useParams } from 'react-router-dom'
 
-export default async function ReviewEditPage({ params }: Props) {
-  const { reviewId } = await params
+export default function ReviewEditPage() {
+  const { reviewId } = useParams<{ reviewId: string }>()
 
   return (
     <main>
