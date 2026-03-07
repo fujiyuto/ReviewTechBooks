@@ -96,7 +96,9 @@ describe('BookListPage', () => {
 
   it('hasPrev が false のとき前へボタンが disabled になる', () => {
     renderPage()
-    const prevBtn = screen.getByRole('button', { name: '前へ' }) as HTMLButtonElement
+    const prevBtn = screen.getByRole('button', {
+      name: '前へ',
+    }) as HTMLButtonElement
     expect(prevBtn.disabled).toBe(true)
   })
 
@@ -107,20 +109,26 @@ describe('BookListPage', () => {
       hasPrev: true,
     })
     renderPage()
-    const prevBtn = screen.getByRole('button', { name: '前へ' }) as HTMLButtonElement
+    const prevBtn = screen.getByRole('button', {
+      name: '前へ',
+    }) as HTMLButtonElement
     expect(prevBtn.disabled).toBe(false)
   })
 
   it('hasNext が true のとき次へボタンが disabled でない', () => {
     renderPage()
-    const nextBtn = screen.getByRole('button', { name: '次へ' }) as HTMLButtonElement
+    const nextBtn = screen.getByRole('button', {
+      name: '次へ',
+    }) as HTMLButtonElement
     expect(nextBtn.disabled).toBe(false)
   })
 
   it('hasNext が false のとき次へボタンが disabled になる', () => {
     mockUseBooks.mockReturnValue({ ...defaultHookResult, hasNext: false })
     renderPage()
-    const nextBtn = screen.getByRole('button', { name: '次へ' }) as HTMLButtonElement
+    const nextBtn = screen.getByRole('button', {
+      name: '次へ',
+    }) as HTMLButtonElement
     expect(nextBtn.disabled).toBe(true)
   })
 
