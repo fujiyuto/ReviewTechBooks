@@ -1,9 +1,3 @@
----
-paths:
-  - "frontend/{app,components}/**/*.tsx"
-  - "frontend/{hooks,api,utils}/**/*.ts"
----
-
 ## コーディング規約
 
 - コンポーネントは関数コンポーネント + TypeScript
@@ -14,4 +8,3 @@ paths:
 - `console.log` をコードに残さない
 - named exportを使用する（default exportは `app/` 配下のページコンポーネントのみ）
 - 全てのコンポーネント・関数・変数には必ずJSDocコメントを付与する
-- 

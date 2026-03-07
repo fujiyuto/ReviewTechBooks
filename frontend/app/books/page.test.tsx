@@ -45,23 +45,23 @@ describe('BookListPage', () => {
     })
   })
 
-  it('renders the page heading', () => {
+  it('ページ見出しが表示される', () => {
     renderPage()
     screen.getByText('書籍一覧')
   })
 
-  it('renders total count when not loading', () => {
+  it('ローディング中でないとき総件数が表示される', () => {
     renderPage()
     screen.getByText('20 件')
   })
 
-  it('renders book cards for each book', () => {
+  it('各書籍のカードが表示される', () => {
     renderPage()
     screen.getByText('テスト書籍1')
     screen.getByText('テスト書籍2')
   })
 
-  it('shows loading skeleton when isLoading is true', () => {
+  it('isLoading が true のときローディングスケルトンが表示される', () => {
     mockUseBooks.mockReturnValueOnce({ ...defaultHookResult, isLoading: true })
     const { container } = renderPage()
     expect(container.querySelectorAll('.animate-pulse').length).toBeGreaterThan(
@@ -69,13 +69,13 @@ describe('BookListPage', () => {
     )
   })
 
-  it('does not render total count while loading', () => {
+  it('isLoading が true のとき総件数が表示されない', () => {
     mockUseBooks.mockReturnValueOnce({ ...defaultHookResult, isLoading: true })
     renderPage()
     expect(screen.queryByText('20 件')).toBeNull()
   })
 
-  it('shows error message when error occurs', () => {
+  it('エラー発生時にエラーメッセージが表示される', () => {
     mockUseBooks.mockReturnValueOnce({
       ...defaultHookResult,
       error: 'サーバーエラーが発生しました',
@@ -84,7 +84,7 @@ describe('BookListPage', () => {
     screen.getByText('サーバーエラーが発生しました')
   })
 
-  it('shows empty state message when books list is empty', () => {
+  it('書籍が0件のとき空状態メッセージが表示される', () => {
     mockUseBooks.mockReturnValueOnce({
       ...defaultHookResult,
       books: [],
@@ -94,52 +94,48 @@ describe('BookListPage', () => {
     screen.getByText('書籍が見つかりませんでした')
   })
 
-  it('shows prev page navigation as disabled span when hasPrev is false', () => {
+  it('hasPrev が false のとき前へボタンが disabled になる', () => {
     renderPage()
-    // hasPrev=false のとき、前ページは <span> でレンダリングされる
-    const prevEl = screen.getByText('前ページ')
-    expect(prevEl.tagName.toLowerCase()).toBe('span')
+    const prevBtn = screen.getByRole('button', { name: '前へ' }) as HTMLButtonElement
+    expect(prevBtn.disabled).toBe(true)
   })
 
-  it('shows prev page navigation as link when hasPrev is true', () => {
+  it('hasPrev が true のとき前へボタンが disabled でない', () => {
     mockUseBooks.mockReturnValue({
       ...defaultHookResult,
       currentPage: 2,
       hasPrev: true,
     })
     renderPage()
-    // hasPrev=true のとき、前ページは <a> (Link) でレンダリングされる
-    const prevEl = screen.getByText('前ページ')
-    expect(prevEl.tagName.toLowerCase()).toBe('a')
+    const prevBtn = screen.getByRole('button', { name: '前へ' }) as HTMLButtonElement
+    expect(prevBtn.disabled).toBe(false)
   })
 
-  it('shows next page navigation as link when hasNext is true', () => {
+  it('hasNext が true のとき次へボタンが disabled でない', () => {
     renderPage()
-    // hasNext=true のとき、次ページは <a> (Link) でレンダリングされる
-    const nextEl = screen.getByText('次ページ')
-    expect(nextEl.tagName.toLowerCase()).toBe('a')
+    const nextBtn = screen.getByRole('button', { name: '次へ' }) as HTMLButtonElement
+    expect(nextBtn.disabled).toBe(false)
   })
 
-  it('shows next page navigation as disabled span when hasNext is false', () => {
+  it('hasNext が false のとき次へボタンが disabled になる', () => {
     mockUseBooks.mockReturnValue({ ...defaultHookResult, hasNext: false })
     renderPage()
-    // hasNext=false のとき、次ページは <span> でレンダリングされる
-    const nextEl = screen.getByText('次ページ')
-    expect(nextEl.tagName.toLowerCase()).toBe('span')
+    const nextBtn = screen.getByRole('button', { name: '次へ' }) as HTMLButtonElement
+    expect(nextBtn.disabled).toBe(true)
   })
 
-  it('hides pagination when books list is empty', () => {
+  it('書籍が0件のときページネーションが表示されない', () => {
     mockUseBooks.mockReturnValueOnce({
       ...defaultHookResult,
       books: [],
       total: 0,
     })
     renderPage()
-    expect(screen.queryByText('前ページ')).toBeNull()
-    expect(screen.queryByText('次ページ')).toBeNull()
+    expect(screen.queryByRole('button', { name: '前へ' })).toBeNull()
+    expect(screen.queryByRole('button', { name: '次へ' })).toBeNull()
   })
 
-  it('calls setFilters with form values on submission', () => {
+  it('フォーム送信時に入力値で setFilters が呼ばれる', () => {
     const setFilters = vi.fn()
     mockUseBooks.mockReturnValue({ ...defaultHookResult, setFilters })
     renderPage()
@@ -157,7 +153,7 @@ describe('BookListPage', () => {
     )
   })
 
-  it('calls setFilters with undefined for empty search fields', () => {
+  it('検索フィールドが空のとき undefined で setFilters が呼ばれる', () => {
     const setFilters = vi.fn()
     mockUseBooks.mockReturnValue({ ...defaultHookResult, setFilters })
     renderPage()
@@ -171,7 +167,7 @@ describe('BookListPage', () => {
     })
   })
 
-  it('calls setPage with page number from URL on mount', async () => {
+  it('マウント時に URL の page パラメータで setPage が呼ばれる', async () => {
     const setPage = vi.fn()
     mockUseBooks.mockReturnValue({ ...defaultHookResult, setPage })
     renderPage('/books?page=3')
@@ -181,7 +177,7 @@ describe('BookListPage', () => {
     })
   })
 
-  it('calls setPage(1) when URL has no page param', async () => {
+  it('URL に page パラメータがないとき setPage(1) が呼ばれる', async () => {
     const setPage = vi.fn()
     mockUseBooks.mockReturnValue({ ...defaultHookResult, setPage })
     renderPage('/books')
@@ -191,7 +187,7 @@ describe('BookListPage', () => {
     })
   })
 
-  it('calls setPage(1) when URL has an invalid page param', async () => {
+  it('URL の page パラメータが無効な値のとき setPage(1) が呼ばれる', async () => {
     const setPage = vi.fn()
     mockUseBooks.mockReturnValue({ ...defaultHookResult, setPage })
     renderPage('/books?page=abc')
@@ -201,22 +197,32 @@ describe('BookListPage', () => {
     })
   })
 
-  it('next page link points to currentPage + 1', () => {
-    // currentPage=1, hasNext=true → 次ページリンクは /books?page=2
+  it('次へボタンをクリックすると currentPage + 1 で setPage が呼ばれる', async () => {
+    const setPage = vi.fn()
+    mockUseBooks.mockReturnValue({ ...defaultHookResult, setPage })
     renderPage()
-    const nextEl = screen.getByText('次ページ')
-    expect(nextEl.getAttribute('href')).toBe('/books?page=2')
+
+    fireEvent.click(screen.getByRole('button', { name: '次へ' }))
+
+    await waitFor(() => {
+      expect(setPage).toHaveBeenCalledWith(2)
+    })
   })
 
-  it('prev page link points to currentPage - 1', () => {
-    // currentPage=3, hasPrev=true → 前ページリンクは /books?page=2
+  it('前へボタンをクリックすると currentPage - 1 で setPage が呼ばれる', async () => {
+    const setPage = vi.fn()
     mockUseBooks.mockReturnValue({
       ...defaultHookResult,
       currentPage: 3,
       hasPrev: true,
+      setPage,
     })
     renderPage()
-    const prevEl = screen.getByText('前ページ')
-    expect(prevEl.getAttribute('href')).toBe('/books?page=2')
+
+    fireEvent.click(screen.getByRole('button', { name: '前へ' }))
+
+    await waitFor(() => {
+      expect(setPage).toHaveBeenCalledWith(2)
+    })
   })
 })

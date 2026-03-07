@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useSearchParams, Link } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { BookCard } from '@/components/features/books/BookCard'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -26,7 +26,7 @@ export default function BookListPage() {
     const raw = Number(searchParams.get('page'))
     const page = Number.isInteger(raw) && raw >= 1 ? raw : 1
     setPage(page)
-  }, [])
+  }, [searchParams])
 
   /** フォームの下書き状態 */
   const [draft, setDraft] = useState<BooksFilter>({
@@ -50,6 +50,20 @@ export default function BookListPage() {
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev)
       next.delete('page')
+      return next
+    })
+  }
+
+  /**
+   * ページネーションアクション
+   * ページを更新し、URLのpageクエリパラメータを変更、ページトップにスクロールする
+   * @params page - ページ番号
+   */
+  const handlePageChange = (page: number) => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev)
+      next.set('page', String(page))
       return next
     })
   }
@@ -124,35 +138,23 @@ export default function BookListPage() {
       {/* ページネーション */}
       {!isLoading && !error && books.length > 0 && (
         <div className="mt-8 flex items-center justify-center gap-2">
-          {hasPrev ? (
-            <Link
-              to={{
-                pathname: '/books',
-                search: `?page=${currentPage - 1}`,
-              }}
-              reloadDocument
-            >
-              前ページ
-            </Link>
-          ) : (
-            <span className="opacity-50 cursor-not-allowed">前ページ</span>
-          )}
+          <Button
+            variant="outline"
+            disabled={!hasPrev}
+            onClick={() => handlePageChange(currentPage - 1)}
+          >
+            前へ
+          </Button>
           <span className="px-3 text-sm text-text-secondary">
             {currentPage} ページ
           </span>
-          {hasNext ? (
-            <Link
-              to={{
-                pathname: '/books',
-                search: `?page=${currentPage + 1}`,
-              }}
-              reloadDocument
-            >
-              次ページ
-            </Link>
-          ) : (
-            <span className="opacity-50 cursor-not-allowed">次ページ</span>
-          )}
+          <Button
+            variant="outline"
+            disabled={!hasNext}
+            onClick={() => handlePageChange(currentPage + 1)}
+          >
+            次へ
+          </Button>
         </div>
       )}
     </>
