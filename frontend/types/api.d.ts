@@ -339,7 +339,7 @@ export interface paths {
             'application/json': {
               reviews?: components['schemas']['Review'][]
               total?: number
-              page?: number
+              currentPage?: number
               limit?: number
               /** @description 次のページが存在するか */
               next?: boolean

@@ -25,6 +25,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^5.1.4",
+    "@vitest/ui": "4.0.18",
     "eslint": "^9",
     "eslint-plugin-react": "^7",
     "eslint-plugin-react-hooks": "^5",

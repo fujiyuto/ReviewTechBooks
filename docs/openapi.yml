@@ -238,7 +238,7 @@ paths:
                       $ref: '#/components/schemas/Review'
                   total:
                     type: integer
-                  page:
+                  currentPage:
                     type: integer
                   limit:
                     type: integer

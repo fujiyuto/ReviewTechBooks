@@ -1,9 +1,3 @@
----
-paths:
-  - "frontend/components/**/*.test.tsx"
-  - "frontend/{hooks,api,utils}/**/*.test.ts"
----
-
 ## テスト
 
 ### コンポーネント

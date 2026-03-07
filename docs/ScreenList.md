@@ -1,10 +1,20 @@
 # 画面一覧
 
+> [!CAUTION]  
+> 使用するAPIについてはopenapi.ymlを参照
+
+
 ### 書籍一覧画面（TOP）
 URL: /books
 
 ### 書籍詳細画面
-URL: /books{bookId}
+
+#### URL
+/books{bookId}  
+
+#### 使用するAPI
+- /api/books/{bookId}
+- /api/books/{bookId}/reviews
 
 ### レビュー投稿画面
 URL: /reviews/create

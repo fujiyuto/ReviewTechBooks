@@ -1,9 +1,3 @@
----
-paths:
-  - "frontend/components/**/*.test.tsx"
-  - "frontend/{hooks,api,utils}/**/*.test.ts"
----
-
 ## 設計原則
 
 - Atomic Design: コンポーネントの再利用性を高めるため
