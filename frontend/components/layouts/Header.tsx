@@ -25,6 +25,12 @@ export function Header() {
             >
               ログイン
             </Link>
+            <Link
+              to="/users/create"
+              className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-600"
+            >
+              新規登録
+            </Link>
           </nav>
         </div>
       </div>
