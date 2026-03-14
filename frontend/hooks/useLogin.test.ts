@@ -70,8 +70,7 @@ describe('useLogin', () => {
     let resolve: () => void = () => {}
     mockSignInWithEmail.mockReturnValue(
       new Promise<Awaited<ReturnType<typeof signInWithEmail>>>((r) => {
-        resolve = () =>
-          r({} as Awaited<ReturnType<typeof signInWithEmail>>)
+        resolve = () => r({} as Awaited<ReturnType<typeof signInWithEmail>>)
       }),
     )
     const { result } = renderHook(() => useLogin(), { wrapper })
@@ -84,7 +83,9 @@ describe('useLogin', () => {
   })
 
   it('sets error when signInWithEmail throws', async () => {
-    mockSignInWithEmail.mockRejectedValue(new Error('Invalid login credentials'))
+    mockSignInWithEmail.mockRejectedValue(
+      new Error('Invalid login credentials'),
+    )
     const { result } = renderHook(() => useLogin(), { wrapper })
     await act(async () => {
       await result.current.login('test@example.com', 'password123')
