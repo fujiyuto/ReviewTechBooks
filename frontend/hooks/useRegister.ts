@@ -39,9 +39,7 @@ export function useRegister(): UseRegisterResult {
       await signUpWithEmail(email, password)
       navigate('/books')
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : '登録に失敗しました',
-      )
+      setError(err instanceof Error ? err.message : '登録に失敗しました')
     } finally {
       setIsLoading(false)
     }
@@ -57,9 +55,7 @@ export function useRegister(): UseRegisterResult {
     try {
       await signInWithGoogle(`${window.location.origin}/books`)
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Google 登録に失敗しました',
-      )
+      setError(err instanceof Error ? err.message : 'Google 登録に失敗しました')
     } finally {
       setIsLoading(false)
     }

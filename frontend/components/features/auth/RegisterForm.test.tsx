@@ -30,9 +30,17 @@ function renderForm() {
 }
 
 /** フォームに値を入力してサブミットするヘルパー */
-async function fillAndSubmit(email: string, password: string, confirmPassword: string) {
-  fireEvent.change(screen.getByLabelText('メールアドレス'), { target: { value: email } })
-  fireEvent.change(screen.getByLabelText('パスワード'), { target: { value: password } })
+async function fillAndSubmit(
+  email: string,
+  password: string,
+  confirmPassword: string,
+) {
+  fireEvent.change(screen.getByLabelText('メールアドレス'), {
+    target: { value: email },
+  })
+  fireEvent.change(screen.getByLabelText('パスワード'), {
+    target: { value: password },
+  })
   fireEvent.change(screen.getByLabelText('パスワード（確認）'), {
     target: { value: confirmPassword },
   })
@@ -49,7 +57,9 @@ describe('RegisterForm', () => {
     renderForm()
     await fillAndSubmit('invalid-email', 'password123', 'password123')
     await waitFor(() => {
-      expect(screen.getByText('有効なメールアドレスを入力してください')).toBeTruthy()
+      expect(
+        screen.getByText('有効なメールアドレスを入力してください'),
+      ).toBeTruthy()
     })
     expect(mockRegister).not.toHaveBeenCalled()
   })
@@ -58,7 +68,9 @@ describe('RegisterForm', () => {
     renderForm()
     await fillAndSubmit('test@example.com', 'short', 'short')
     await waitFor(() => {
-      expect(screen.getByText('パスワードは8文字以上で入力してください')).toBeTruthy()
+      expect(
+        screen.getByText('パスワードは8文字以上で入力してください'),
+      ).toBeTruthy()
     })
     expect(mockRegister).not.toHaveBeenCalled()
   })
@@ -77,7 +89,10 @@ describe('RegisterForm', () => {
     renderForm()
     await fillAndSubmit('test@example.com', 'password123', 'password123')
     await waitFor(() => {
-      expect(mockRegister).toHaveBeenCalledWith('test@example.com', 'password123')
+      expect(mockRegister).toHaveBeenCalledWith(
+        'test@example.com',
+        'password123',
+      )
     })
   })
 
@@ -93,7 +108,9 @@ describe('RegisterForm', () => {
       error: 'メールアドレスは既に使用されています',
     })
     renderForm()
-    expect(screen.getByText('メールアドレスは既に使用されています')).toBeTruthy()
+    expect(
+      screen.getByText('メールアドレスは既に使用されています'),
+    ).toBeTruthy()
   })
 
   it('shows 登録中... and disables buttons when isLoading=true', () => {

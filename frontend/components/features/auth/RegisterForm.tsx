@@ -26,7 +26,12 @@ type RegisterFormValues = z.infer<typeof schema>
  * メール/パスワード登録と Google OAuth 登録をサポートする
  */
 export function RegisterForm() {
-  const { isLoading, error, register: registerUser, registerWithGoogle } = useRegister()
+  const {
+    isLoading,
+    error,
+    register: registerUser,
+    registerWithGoogle,
+  } = useRegister()
   const {
     register,
     handleSubmit,
@@ -45,7 +50,9 @@ export function RegisterForm() {
 
   return (
     <div className="mx-auto w-full max-w-md rounded-xl border border-surface-border bg-surface-base p-8 shadow-sm">
-      <h1 className="mb-6 text-2xl font-bold text-text-primary">ユーザー登録</h1>
+      <h1 className="mb-6 text-2xl font-bold text-text-primary">
+        ユーザー登録
+      </h1>
 
       {error && (
         <div className="mb-4 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
@@ -107,11 +114,18 @@ export function RegisterForm() {
             {...register('confirmPassword')}
           />
           {errors.confirmPassword && (
-            <p className="text-sm text-red-600">{errors.confirmPassword.message}</p>
+            <p className="text-sm text-red-600">
+              {errors.confirmPassword.message}
+            </p>
           )}
         </div>
 
-        <Button type="submit" variant="primary" className="w-full" disabled={isLoading}>
+        <Button
+          type="submit"
+          variant="primary"
+          className="w-full"
+          disabled={isLoading}
+        >
           {isLoading ? '登録中...' : '登録する'}
         </Button>
       </form>

@@ -31,7 +31,10 @@ describe('signUpWithEmail', () => {
   })
 
   it('calls supabase.auth.signUp with email and password', async () => {
-    mockSignUp.mockResolvedValue({ data: { user: null, session: null }, error: null })
+    mockSignUp.mockResolvedValue({
+      data: { user: null, session: null },
+      error: null,
+    })
     await signUpWithEmail('test@example.com', 'password123')
     expect(mockSignUp).toHaveBeenCalledWith({
       email: 'test@example.com',
@@ -40,17 +43,23 @@ describe('signUpWithEmail', () => {
   })
 
   it('returns data on success', async () => {
-    mockSignUp.mockResolvedValue({ data: { user: null, session: null }, error: null })
+    mockSignUp.mockResolvedValue({
+      data: { user: null, session: null },
+      error: null,
+    })
     const result = await signUpWithEmail('test@example.com', 'password123')
     expect(result).toEqual({ user: null, session: null })
   })
 
   it('throws error when supabase returns an error', async () => {
     const mockError = makeAuthError('Email already registered')
-    mockSignUp.mockResolvedValue({ data: { user: null, session: null }, error: mockError })
-    await expect(signUpWithEmail('test@example.com', 'password123')).rejects.toThrow(
-      'Email already registered',
-    )
+    mockSignUp.mockResolvedValue({
+      data: { user: null, session: null },
+      error: mockError,
+    })
+    await expect(
+      signUpWithEmail('test@example.com', 'password123'),
+    ).rejects.toThrow('Email already registered')
   })
 })
 
@@ -72,7 +81,10 @@ describe('signInWithGoogle', () => {
   })
 
   it('returns data on success', async () => {
-    const mockData = { provider: 'google' as const, url: 'https://accounts.google.com' }
+    const mockData = {
+      provider: 'google' as const,
+      url: 'https://accounts.google.com',
+    }
     mockSignInWithOAuth.mockResolvedValue({ data: mockData, error: null })
     const result = await signInWithGoogle('http://localhost:3000/books')
     expect(result).toEqual(mockData)
@@ -84,6 +96,8 @@ describe('signInWithGoogle', () => {
       data: { provider: 'google' as const, url: null },
       error: mockError,
     })
-    await expect(signInWithGoogle('http://localhost:3000/books')).rejects.toThrow('OAuth error')
+    await expect(
+      signInWithGoogle('http://localhost:3000/books'),
+    ).rejects.toThrow('OAuth error')
   })
 })

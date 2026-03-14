@@ -47,7 +47,10 @@ describe('useRegister', () => {
     await act(async () => {
       await result.current.register('test@example.com', 'password123')
     })
-    expect(mockSignUpWithEmail).toHaveBeenCalledWith('test@example.com', 'password123')
+    expect(mockSignUpWithEmail).toHaveBeenCalledWith(
+      'test@example.com',
+      'password123',
+    )
   })
 
   it('navigates to /books after successful registration', async () => {
@@ -86,12 +89,17 @@ describe('useRegister', () => {
   })
 
   it('calls signInWithGoogle with origin/books on registerWithGoogle', async () => {
-    mockSignInWithGoogle.mockResolvedValue({ provider: 'google', url: 'https://accounts.google.com' })
+    mockSignInWithGoogle.mockResolvedValue({
+      provider: 'google',
+      url: 'https://accounts.google.com',
+    })
     const { result } = renderHook(() => useRegister(), { wrapper })
     await act(async () => {
       await result.current.registerWithGoogle()
     })
-    expect(mockSignInWithGoogle).toHaveBeenCalledWith(`${window.location.origin}/books`)
+    expect(mockSignInWithGoogle).toHaveBeenCalledWith(
+      `${window.location.origin}/books`,
+    )
   })
 
   it('sets error when signInWithGoogle throws', async () => {
