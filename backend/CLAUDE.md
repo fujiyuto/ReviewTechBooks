@@ -25,27 +25,27 @@ pnpm format:check # prettier チェック
 
 ```
 src/
-├── index.ts         
-├── routes/           
-├── services/        
-├── repositories/     
-├── infrastructure/   
-├── schemas/          
-├── types/           
-└── middleware/      
+├── index.ts
+├── routes/
+├── services/
+├── repositories/
+├── infrastructure/
+├── schemas/
+├── types/
+└── middleware/
 ```
 
 ## 各ディレクトリの役割
 
-| ディレクトリ | 役割 |
-|---|---|
-| `routes/` | Honoインスタンスの生成・ルーティングの定義 |
-| `services/` | ビジネスロジック。`repositories/`のインターフェースに依存する |
-| `repositories/` | データアクセスのインターフェース定義 |
-| `infrastructure/` | `repositories/`インターフェースの具体的な実装（Supabase等） |
-| `schemas/` | zodによるリクエスト・レスポンスのバリデーションスキーマ |
-| `types/` | 型定義。openapi-typescriptから抽出した型定義を配置 |
-| `middleware/` | 認証・エラーハンドリング等の共通ミドルウェア |
+| ディレクトリ      | 役割                                                          |
+| ----------------- | ------------------------------------------------------------- |
+| `routes/`         | Honoインスタンスの生成・ルーティングの定義                    |
+| `services/`       | ビジネスロジック。`repositories/`のインターフェースに依存する |
+| `repositories/`   | データアクセスのインターフェース定義                          |
+| `infrastructure/` | `repositories/`インターフェースの具体的な実装（Supabase等）   |
+| `schemas/`        | zodによるリクエスト・レスポンスのバリデーションスキーマ       |
+| `types/`          | 型定義。openapi-typescriptから抽出した型定義を配置            |
+| `middleware/`     | 認証・エラーハンドリング等の共通ミドルウェア                  |
 
 ## ルーティングの構成
 

@@ -10,9 +10,9 @@ vi.mock('../infrastructure/supabaseUserRepository.js', () => ({
 }))
 
 vi.mock('../services/userService.js', () => ({
-  UserService: vi.fn().mockImplementation(function (
-    this: { registerUser: typeof mockRegisterUser },
-  ) {
+  UserService: vi.fn().mockImplementation(function (this: {
+    registerUser: typeof mockRegisterUser
+  }) {
     this.registerUser = mockRegisterUser
   }),
 }))

@@ -8,7 +8,9 @@ export class UserService {
   async registerUser(data: unknown): Promise<void> {
     const result = userRegistrationSchema.safeParse(data)
     if (!result.success) {
-      throw new BadRequestError(result.error.issues[0]?.message ?? 'Invalid input')
+      throw new BadRequestError(
+        result.error.issues[0]?.message ?? 'Invalid input',
+      )
     }
 
     await this.userRepository.create(result.data)
