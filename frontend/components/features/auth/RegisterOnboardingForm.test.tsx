@@ -52,9 +52,7 @@ describe('RegisterOAuthForm', () => {
   it('自己紹介文フィールドが表示される', () => {
     renderForm()
     expect(screen.getByLabelText('自己紹介文')).toBeTruthy()
-    expect(
-      screen.getByPlaceholderText('自己紹介文を入力（任意）'),
-    ).toBeTruthy()
+    expect(screen.getByPlaceholderText('自己紹介文を入力（任意）')).toBeTruthy()
   })
 
   it('正常送信時に completeOnboarding が (userName, bio) で呼ばれる', async () => {

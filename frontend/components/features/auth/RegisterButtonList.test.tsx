@@ -24,7 +24,11 @@ const mockUseRegister = vi.mocked(useRegister)
 /** MemoryRouter でラップしてレンダリングするヘルパー */
 function renderForm() {
   return render(
-    React.createElement(MemoryRouter, null, React.createElement(RegisterButtonList)),
+    React.createElement(
+      MemoryRouter,
+      null,
+      React.createElement(RegisterButtonList),
+    ),
   )
 }
 

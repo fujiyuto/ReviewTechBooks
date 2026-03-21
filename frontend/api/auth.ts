@@ -7,13 +7,10 @@ import { supabase } from '@/lib/supabase'
  * @returns Supabase auth.signUp のレスポンス
  * @throws 登録に失敗した場合にエラーをスロー
  */
-export async function signUpWithEmail(
-  email: string,
-  password: string
-) {
+export async function signUpWithEmail(email: string, password: string) {
   const { data, error } = await supabase.auth.signUp({
     email,
-    password
+    password,
   })
   if (error) throw error
 
@@ -27,12 +24,9 @@ export async function signUpWithEmail(
  * @returns Supabase auth.updateUser のレスポンス
  * @throws 更新に失敗した場合にエラーをスロー
  */
-export async function updateOnboarding(
-  username: string,
-  biography: string
-) {
+export async function updateOnboarding(username: string, biography: string) {
   const {
-    data: { user }
+    data: { user },
   } = await supabase.auth.getUser()
 
   if (!user) {
@@ -42,12 +36,12 @@ export async function updateOnboarding(
   const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/users`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       authId: user?.id,
       username,
-      biography
+      biography,
     }),
   })
 

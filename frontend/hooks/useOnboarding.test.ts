@@ -43,16 +43,25 @@ describe('useOnboarding', () => {
     mockUpdateOnboarding.mockResolvedValue(undefined)
     const { result } = renderHook(() => useOnboarding(), { wrapper })
     await act(async () => {
-      await result.current.completeOnboarding('テストユーザー', '自己紹介文です')
+      await result.current.completeOnboarding(
+        'テストユーザー',
+        '自己紹介文です',
+      )
     })
-    expect(mockUpdateOnboarding).toHaveBeenCalledWith('テストユーザー', '自己紹介文です')
+    expect(mockUpdateOnboarding).toHaveBeenCalledWith(
+      'テストユーザー',
+      '自己紹介文です',
+    )
   })
 
   it('成功後に /books へナビゲートする', async () => {
     mockUpdateOnboarding.mockResolvedValue(undefined)
     const { result } = renderHook(() => useOnboarding(), { wrapper })
     await act(async () => {
-      await result.current.completeOnboarding('テストユーザー', '自己紹介文です')
+      await result.current.completeOnboarding(
+        'テストユーザー',
+        '自己紹介文です',
+      )
     })
     expect(mockNavigate).toHaveBeenCalledWith('/books')
   })
@@ -79,7 +88,10 @@ describe('useOnboarding', () => {
     )
     const { result } = renderHook(() => useOnboarding(), { wrapper })
     await act(async () => {
-      await result.current.completeOnboarding('テストユーザー', '自己紹介文です')
+      await result.current.completeOnboarding(
+        'テストユーザー',
+        '自己紹介文です',
+      )
     })
     expect(result.current.error).toBe('ユーザー名の設定に失敗しました')
     expect(result.current.isLoading).toBe(false)
