@@ -118,9 +118,10 @@ describe('updateOnboarding', () => {
   })
 
   it('throws error when user is not found', async () => {
+    const mockError = makeAuthError('Oauth error')
     mockGetUser.mockResolvedValue({
       data: { user: null },
-      error: null,
+      error: mockError,
     })
     await expect(
       updateOnboarding('テストユーザー', '自己紹介文です'),
