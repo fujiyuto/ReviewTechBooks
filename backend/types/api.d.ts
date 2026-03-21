@@ -4,688 +4,688 @@
  */
 
 export interface paths {
-  '/api/users': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /** ユーザー登録 */
-    post: {
-      parameters: {
-        query?: never
-        header?: never
-        path?: never
-        cookie?: never
-      }
-      requestBody: {
-        content: {
-          'application/json': {
-            /**
-             * Format: uuid
-             * @description Supabase Auth ID
-             */
-            authId: string
-            /** @description ユーザー名 */
-            username: string
-            /** @description 自己紹介文 */
-            biography?: string
-          }
-        }
-      }
-      responses: {
-        /** @description 登録成功 */
-        201: {
-          headers: {
-            [name: string]: unknown
-          }
-          content?: never
-        }
-        400: components['responses']['BadRequest']
-      }
-    }
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/api/users/{userId}': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** ユーザー詳細取得 */
-    get: {
-      parameters: {
-        query?: never
-        header?: never
-        path: {
-          userId: components['parameters']['UserId']
-        }
-        cookie?: never
-      }
-      requestBody?: never
-      responses: {
-        /** @description 取得成功 */
-        200: {
-          headers: {
-            [name: string]: unknown
-          }
-          content: {
-            'application/json': components['schemas']['User']
-          }
-        }
-        404: components['responses']['NotFound']
-      }
-    }
-    put?: never
-    post?: never
-    /** ユーザー削除 */
-    delete: {
-      parameters: {
-        query?: never
-        header?: never
-        path: {
-          userId: components['parameters']['UserId']
-        }
-        cookie?: never
-      }
-      requestBody?: never
-      responses: {
-        /** @description 削除成功 */
-        200: {
-          headers: {
-            [name: string]: unknown
-          }
-          content: {
-            'application/json': {
-              /** @example ユーザーを削除しました */
-              message?: string
-            }
-          }
-        }
-        401: components['responses']['Unauthorized']
-        403: components['responses']['Forbidden']
-        404: components['responses']['NotFound']
-      }
-    }
-    options?: never
-    head?: never
-    /** ユーザー編集 */
-    patch: {
-      parameters: {
-        query?: never
-        header?: never
-        path: {
-          userId: components['parameters']['UserId']
-        }
-        cookie?: never
-      }
-      requestBody: {
-        content: {
-          'application/json': {
-            /** @description ユーザー名 */
-            username?: string
-            /** @description 名前（姓） */
-            lastName?: string
-            /** @description 名前（名） */
-            firstName?: string
-            /** @description 自己紹介 */
-            biography?: string
-          }
-        }
-      }
-      responses: {
-        /** @description 更新成功 */
-        200: {
-          headers: {
-            [name: string]: unknown
-          }
-          content: {
-            'application/json': components['schemas']['User']
-          }
-        }
-        401: components['responses']['Unauthorized']
-        403: components['responses']['Forbidden']
-        404: components['responses']['NotFound']
-      }
-    }
-    trace?: never
-  }
-  '/api/users/{userId}/reviews': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** ユーザーのレビュー一覧取得 */
-    get: {
-      parameters: {
-        query?: {
-          page?: components['parameters']['Page']
-          limit?: components['parameters']['Limit']
-        }
-        header?: never
-        path: {
-          userId: components['parameters']['UserId']
-        }
-        cookie?: never
-      }
-      requestBody?: never
-      responses: {
-        /** @description 取得成功 */
-        200: {
-          headers: {
-            [name: string]: unknown
-          }
-          content: {
-            'application/json': {
-              reviews?: components['schemas']['UserReview'][]
-              total?: number
-              page?: number
-              limit?: number
-              /** @description 次のページが存在するか */
-              next?: boolean
-              /** @description 前のページが存在するか */
-              prev?: boolean
-            }
-          }
-        }
-        404: components['responses']['NotFound']
-      }
-    }
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/api/books': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** 書籍一覧取得 */
-    get: {
-      parameters: {
-        query?: {
-          /** @description 書籍名 */
-          title?: components['parameters']['Title']
-          /** @description 著者名 */
-          author?: components['parameters']['Author']
-          /** @description 出版社名 */
-          publishedBy?: components['parameters']['PublishedBy']
-          page?: components['parameters']['Page']
-          limit?: components['parameters']['Limit']
-        }
-        header?: never
-        path?: never
-        cookie?: never
-      }
-      requestBody?: never
-      responses: {
-        /** @description 取得成功 */
-        200: {
-          headers: {
-            [name: string]: unknown
-          }
-          content: {
-            'application/json': {
-              books?: components['schemas']['BookSummary'][]
-              total?: number
-              currentPage?: number
-              /** @description 総ページ数 */
-              totalPages?: number
-              limit?: number
-              /** @description 次のページが存在するか */
-              next?: boolean
-              /** @description 前のページが存在するか */
-              prev?: boolean
-            }
-          }
-        }
-      }
-    }
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/api/books/{bookId}': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** 書籍詳細取得 */
-    get: {
-      parameters: {
-        query?: never
-        header?: never
-        path: {
-          bookId: components['parameters']['BookId']
-        }
-        cookie?: never
-      }
-      requestBody?: never
-      responses: {
-        /** @description 取得成功 */
-        200: {
-          headers: {
-            [name: string]: unknown
-          }
-          content: {
-            'application/json': components['schemas']['BookDetail']
-          }
-        }
-        404: components['responses']['NotFound']
-      }
-    }
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/api/books/{bookId}/reviews': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** 書籍のレビュー一覧取得 */
-    get: {
-      parameters: {
-        query?: {
-          /** @description カテゴリIDによる絞り込み */
-          category_id?: components['parameters']['CategoryId']
-          page?: components['parameters']['Page']
-          limit?: components['parameters']['Limit']
-        }
-        header?: never
-        path: {
-          bookId: components['parameters']['BookId']
-        }
-        cookie?: never
-      }
-      requestBody?: never
-      responses: {
-        /** @description 取得成功 */
-        200: {
-          headers: {
-            [name: string]: unknown
-          }
-          content: {
-            'application/json': {
-              reviews?: components['schemas']['Review'][]
-              total?: number
-              currentPage?: number
-              limit?: number
-              /** @description 次のページが存在するか */
-              next?: boolean
-              /** @description 前のページが存在するか */
-              prev?: boolean
-            }
-          }
-        }
-        404: components['responses']['NotFound']
-      }
-    }
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/api/reviews': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /** レビュー投稿 */
-    post: {
-      parameters: {
-        query?: never
-        header?: never
-        path?: never
-        cookie?: never
-      }
-      requestBody: {
-        content: {
-          'application/json': {
-            /**
-             * Format: int64
-             * @description 書籍ID
-             */
-            bookId: number
-            /** @description レビュータイトル */
-            title: string
-            /** @description レビュー内容 */
-            content: string
-            /** @description カテゴリIDのリスト */
-            categoryIds?: number[]
-          }
-        }
-      }
-      responses: {
-        /** @description 投稿成功 */
-        201: {
-          headers: {
-            [name: string]: unknown
-          }
-          content: {
-            'application/json': {
-              /**
-               * Format: int64
-               * @description 書籍ID
-               */
-              bookId?: number
-            }
-          }
-        }
-        400: components['responses']['BadRequest']
-        401: components['responses']['Unauthorized']
-      }
-    }
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/api/reviews/{reviewId}': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    /** レビュー削除 */
-    delete: {
-      parameters: {
-        query?: never
-        header?: never
-        path: {
-          reviewId: components['parameters']['ReviewId']
-        }
-        cookie?: never
-      }
-      requestBody?: never
-      responses: {
-        /** @description 削除成功 */
-        200: {
-          headers: {
-            [name: string]: unknown
-          }
-          content: {
-            'application/json': {
-              /** @example レビューを削除しました */
-              message?: string
-            }
-          }
-        }
-        401: components['responses']['Unauthorized']
-        403: components['responses']['Forbidden']
-        404: components['responses']['NotFound']
-      }
-    }
-    options?: never
-    head?: never
-    /** レビュー編集 */
-    patch: {
-      parameters: {
-        query?: never
-        header?: never
-        path: {
-          reviewId: components['parameters']['ReviewId']
-        }
-        cookie?: never
-      }
-      requestBody: {
-        content: {
-          'application/json': {
-            /** @description レビュータイトル */
-            title?: string
-            /** @description レビュー内容 */
-            content?: string
-            /** @description カテゴリIDのリスト */
-            categoryIds?: number[]
-          }
-        }
-      }
-      responses: {
-        /** @description 更新成功 */
-        200: {
-          headers: {
-            [name: string]: unknown
-          }
-          content?: never
-        }
-        401: components['responses']['Unauthorized']
-        403: components['responses']['Forbidden']
-        404: components['responses']['NotFound']
-      }
-    }
-    trace?: never
-  }
-  '/api/categories': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** カテゴリ取得 */
-    get: {
-      parameters: {
-        query: {
-          /** @description 機能名（例：review、user） */
-          feature_name: components['parameters']['FeatureName']
-        }
-        header?: never
-        path?: never
-        cookie?: never
-      }
-      requestBody?: never
-      responses: {
-        /** @description 取得成功 */
-        200: {
-          headers: {
-            [name: string]: unknown
-          }
-          content: {
-            'application/json': {
-              categoryTypes?: components['schemas']['CategoryType'][]
-            }
-          }
-        }
-      }
-    }
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
+    "/api/users": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** ユーザー登録 */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /**
+                         * Format: uuid
+                         * @description Supabase Auth ID
+                         */
+                        authId: string;
+                        /** @description ユーザー名 */
+                        username: string;
+                        /** @description 自己紹介文 */
+                        biography?: string;
+                    };
+                };
+            };
+            responses: {
+                /** @description 登録成功 */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                400: components["responses"]["BadRequest"];
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/users/{userId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** ユーザー詳細取得 */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    userId: components["parameters"]["UserId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description 取得成功 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["User"];
+                    };
+                };
+                404: components["responses"]["NotFound"];
+            };
+        };
+        put?: never;
+        post?: never;
+        /** ユーザー削除 */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    userId: components["parameters"]["UserId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description 削除成功 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example ユーザーを削除しました */
+                            message?: string;
+                        };
+                    };
+                };
+                401: components["responses"]["Unauthorized"];
+                403: components["responses"]["Forbidden"];
+                404: components["responses"]["NotFound"];
+            };
+        };
+        options?: never;
+        head?: never;
+        /** ユーザー編集 */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    userId: components["parameters"]["UserId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** @description ユーザー名 */
+                        username?: string;
+                        /** @description 名前（姓） */
+                        lastName?: string;
+                        /** @description 名前（名） */
+                        firstName?: string;
+                        /** @description 自己紹介 */
+                        biography?: string;
+                    };
+                };
+            };
+            responses: {
+                /** @description 更新成功 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["User"];
+                    };
+                };
+                401: components["responses"]["Unauthorized"];
+                403: components["responses"]["Forbidden"];
+                404: components["responses"]["NotFound"];
+            };
+        };
+        trace?: never;
+    };
+    "/api/users/{userId}/reviews": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** ユーザーのレビュー一覧取得 */
+        get: {
+            parameters: {
+                query?: {
+                    page?: components["parameters"]["Page"];
+                    limit?: components["parameters"]["Limit"];
+                };
+                header?: never;
+                path: {
+                    userId: components["parameters"]["UserId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description 取得成功 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            reviews?: components["schemas"]["UserReview"][];
+                            total?: number;
+                            page?: number;
+                            limit?: number;
+                            /** @description 次のページが存在するか */
+                            next?: boolean;
+                            /** @description 前のページが存在するか */
+                            prev?: boolean;
+                        };
+                    };
+                };
+                404: components["responses"]["NotFound"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/books": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 書籍一覧取得 */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description 書籍名 */
+                    title?: components["parameters"]["Title"];
+                    /** @description 著者名 */
+                    author?: components["parameters"]["Author"];
+                    /** @description 出版社名 */
+                    publishedBy?: components["parameters"]["PublishedBy"];
+                    page?: components["parameters"]["Page"];
+                    limit?: components["parameters"]["Limit"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description 取得成功 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            books?: components["schemas"]["BookSummary"][];
+                            total?: number;
+                            currentPage?: number;
+                            /** @description 総ページ数 */
+                            totalPages?: number;
+                            limit?: number;
+                            /** @description 次のページが存在するか */
+                            next?: boolean;
+                            /** @description 前のページが存在するか */
+                            prev?: boolean;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/books/{bookId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 書籍詳細取得 */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    bookId: components["parameters"]["BookId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description 取得成功 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["BookDetail"];
+                    };
+                };
+                404: components["responses"]["NotFound"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/books/{bookId}/reviews": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 書籍のレビュー一覧取得 */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description カテゴリIDによる絞り込み */
+                    category_id?: components["parameters"]["CategoryId"];
+                    page?: components["parameters"]["Page"];
+                    limit?: components["parameters"]["Limit"];
+                };
+                header?: never;
+                path: {
+                    bookId: components["parameters"]["BookId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description 取得成功 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            reviews?: components["schemas"]["Review"][];
+                            total?: number;
+                            currentPage?: number;
+                            limit?: number;
+                            /** @description 次のページが存在するか */
+                            next?: boolean;
+                            /** @description 前のページが存在するか */
+                            prev?: boolean;
+                        };
+                    };
+                };
+                404: components["responses"]["NotFound"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/reviews": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** レビュー投稿 */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /**
+                         * Format: int64
+                         * @description 書籍ID
+                         */
+                        bookId: number;
+                        /** @description レビュータイトル */
+                        title: string;
+                        /** @description レビュー内容 */
+                        content: string;
+                        /** @description カテゴリIDのリスト */
+                        categoryIds?: number[];
+                    };
+                };
+            };
+            responses: {
+                /** @description 投稿成功 */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /**
+                             * Format: int64
+                             * @description 書籍ID
+                             */
+                            bookId?: number;
+                        };
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                401: components["responses"]["Unauthorized"];
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/reviews/{reviewId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** レビュー削除 */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    reviewId: components["parameters"]["ReviewId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description 削除成功 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example レビューを削除しました */
+                            message?: string;
+                        };
+                    };
+                };
+                401: components["responses"]["Unauthorized"];
+                403: components["responses"]["Forbidden"];
+                404: components["responses"]["NotFound"];
+            };
+        };
+        options?: never;
+        head?: never;
+        /** レビュー編集 */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    reviewId: components["parameters"]["ReviewId"];
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** @description レビュータイトル */
+                        title?: string;
+                        /** @description レビュー内容 */
+                        content?: string;
+                        /** @description カテゴリIDのリスト */
+                        categoryIds?: number[];
+                    };
+                };
+            };
+            responses: {
+                /** @description 更新成功 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                401: components["responses"]["Unauthorized"];
+                403: components["responses"]["Forbidden"];
+                404: components["responses"]["NotFound"];
+            };
+        };
+        trace?: never;
+    };
+    "/api/categories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** カテゴリ取得 */
+        get: {
+            parameters: {
+                query: {
+                    /** @description 機能名（例：review、user） */
+                    feature_name: components["parameters"]["FeatureName"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description 取得成功 */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            categoryTypes?: components["schemas"]["CategoryType"][];
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
-export type webhooks = Record<string, never>
+export type webhooks = Record<string, never>;
 export interface components {
-  schemas: {
-    User: {
-      /** Format: int64 */
-      id?: number
-      username?: string
-      lastName?: string
-      firstName?: string
-      biography?: string
-      /** @enum {string} */
-      role?: 'free' | 'premium'
-      /** Format: date-time */
-      createdAt?: string
-      /** Format: date-time */
-      updatedAt?: string
-    }
-    BookSummary: {
-      /** Format: int64 */
-      id?: number
-      isbn?: string
-      title?: string
-      author?: string
-      publishedBy?: string
-      /** Format: date */
-      releaseDate?: string
-      thumbnailUrl?: string
-    }
-    BookDetail: {
-      /** Format: int64 */
-      id?: number
-      isbn?: string
-      title?: string
-      subtitle?: string
-      author?: string
-      publishedBy?: string
-      numberOfPages?: number
-      regularPrice?: number
-      includeTaxPrice?: number
-      /** Format: date */
-      releaseDate?: string
-      description?: string
-      thumbnailUrl?: string
-    }
-    Review: {
-      /** Format: int64 */
-      id?: number
-      user?: {
-        /** Format: int64 */
-        id?: number
-        username?: string
-      }
-      title?: string
-      content?: string
-      categories?: components['schemas']['Category'][]
-      /** Format: date-time */
-      createdAt?: string
-      /** Format: date-time */
-      updatedAt?: string
-    }
-    UserReview: {
-      /** Format: int64 */
-      id?: number
-      book?: {
-        /** Format: int64 */
-        id?: number
-        title?: string
-        thumbnailUrl?: string
-      }
-      title?: string
-      content?: string
-      categories?: components['schemas']['Category'][]
-      /** Format: date-time */
-      createdAt?: string
-      /** Format: date-time */
-      updatedAt?: string
-    }
-    CategoryType: {
-      id?: number
-      name?: string
-      categories?: components['schemas']['Category'][]
-    }
-    Category: {
-      id?: number
-      name?: string
-      order?: number
-    }
-    Error: {
-      message?: string
-    }
-  }
-  responses: {
-    /** @description リクエストが不正 */
-    BadRequest: {
-      headers: {
-        [name: string]: unknown
-      }
-      content: {
-        'application/json': components['schemas']['Error']
-      }
-    }
-    /** @description 認証エラー */
-    Unauthorized: {
-      headers: {
-        [name: string]: unknown
-      }
-      content: {
-        'application/json': components['schemas']['Error']
-      }
-    }
-    /** @description 権限エラー */
-    Forbidden: {
-      headers: {
-        [name: string]: unknown
-      }
-      content: {
-        'application/json': components['schemas']['Error']
-      }
-    }
-    /** @description リソースが見つからない */
-    NotFound: {
-      headers: {
-        [name: string]: unknown
-      }
-      content: {
-        'application/json': components['schemas']['Error']
-      }
-    }
-  }
-  parameters: {
-    /** @description 機能名（例：review、user） */
-    FeatureName: string
-    /** @description 書籍名 */
-    Title: string
-    /** @description 著者名 */
-    Author: string
-    /** @description 出版社名 */
-    PublishedBy: string
-    UserId: number
-    BookId: number
-    ReviewId: number
-    /** @description カテゴリIDによる絞り込み */
-    CategoryId: number
-    Page: number
-    Limit: number
-  }
-  requestBodies: never
-  headers: never
-  pathItems: never
+    schemas: {
+        User: {
+            /** Format: int64 */
+            id?: number;
+            username?: string;
+            lastName?: string;
+            firstName?: string;
+            biography?: string;
+            /** @enum {string} */
+            role?: "free" | "premium";
+            /** Format: date-time */
+            createdAt?: string;
+            /** Format: date-time */
+            updatedAt?: string;
+        };
+        BookSummary: {
+            /** Format: int64 */
+            id?: number;
+            isbn?: string;
+            title?: string;
+            author?: string;
+            publishedBy?: string;
+            /** Format: date */
+            releaseDate?: string;
+            thumbnailUrl?: string;
+        };
+        BookDetail: {
+            /** Format: int64 */
+            id?: number;
+            isbn?: string;
+            title?: string;
+            subtitle?: string;
+            author?: string;
+            publishedBy?: string;
+            numberOfPages?: number;
+            regularPrice?: number;
+            includeTaxPrice?: number;
+            /** Format: date */
+            releaseDate?: string;
+            description?: string;
+            thumbnailUrl?: string;
+        };
+        Review: {
+            /** Format: int64 */
+            id?: number;
+            user?: {
+                /** Format: int64 */
+                id?: number;
+                username?: string;
+            };
+            title?: string;
+            content?: string;
+            categories?: components["schemas"]["Category"][];
+            /** Format: date-time */
+            createdAt?: string;
+            /** Format: date-time */
+            updatedAt?: string;
+        };
+        UserReview: {
+            /** Format: int64 */
+            id?: number;
+            book?: {
+                /** Format: int64 */
+                id?: number;
+                title?: string;
+                thumbnailUrl?: string;
+            };
+            title?: string;
+            content?: string;
+            categories?: components["schemas"]["Category"][];
+            /** Format: date-time */
+            createdAt?: string;
+            /** Format: date-time */
+            updatedAt?: string;
+        };
+        CategoryType: {
+            id?: number;
+            name?: string;
+            categories?: components["schemas"]["Category"][];
+        };
+        Category: {
+            id?: number;
+            name?: string;
+            order?: number;
+        };
+        Error: {
+            message?: string;
+        };
+    };
+    responses: {
+        /** @description リクエストが不正 */
+        BadRequest: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["Error"];
+            };
+        };
+        /** @description 認証エラー */
+        Unauthorized: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["Error"];
+            };
+        };
+        /** @description 権限エラー */
+        Forbidden: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["Error"];
+            };
+        };
+        /** @description リソースが見つからない */
+        NotFound: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["Error"];
+            };
+        };
+    };
+    parameters: {
+        /** @description 機能名（例：review、user） */
+        FeatureName: string;
+        /** @description 書籍名 */
+        Title: string;
+        /** @description 著者名 */
+        Author: string;
+        /** @description 出版社名 */
+        PublishedBy: string;
+        UserId: number;
+        BookId: number;
+        ReviewId: number;
+        /** @description カテゴリIDによる絞り込み */
+        CategoryId: number;
+        Page: number;
+        Limit: number;
+    };
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
 }
-export type $defs = Record<string, never>
-export type operations = Record<string, never>
+export type $defs = Record<string, never>;
+export type operations = Record<string, never>;

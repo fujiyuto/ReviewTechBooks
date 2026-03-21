@@ -18,14 +18,10 @@ const defaultHookResult: UseBooksResult = {
     { id: 2, title: 'テスト書籍2', author: '著者B', publishedBy: '出版社B' },
   ],
   total: 20,
-  currentPage: 1,
   hasNext: true,
   hasPrev: false,
   isLoading: false,
   error: null,
-  filters: {},
-  setPage: vi.fn(),
-  setFilters: vi.fn(),
 }
 
 function renderPage(initialEntry = '/books') {
@@ -38,11 +34,8 @@ function renderPage(initialEntry = '/books') {
 
 describe('BookListPage', () => {
   beforeEach(() => {
-    mockUseBooks.mockReturnValue({
-      ...defaultHookResult,
-      setPage: vi.fn(),
-      setFilters: vi.fn(),
-    })
+    vi.clearAllMocks()
+    mockUseBooks.mockReturnValue(defaultHookResult)
   })
 
   it('ページ見出しが表示される', () => {
@@ -105,7 +98,6 @@ describe('BookListPage', () => {
   it('hasPrev が true のとき前へボタンが disabled でない', () => {
     mockUseBooks.mockReturnValue({
       ...defaultHookResult,
-      currentPage: 2,
       hasPrev: true,
     })
     renderPage()
@@ -143,11 +135,8 @@ describe('BookListPage', () => {
     expect(screen.queryByRole('button', { name: '次へ' })).toBeNull()
   })
 
-  it('フォーム送信時に入力値で setFilters が呼ばれる', () => {
-    const setFilters = vi.fn()
-    mockUseBooks.mockReturnValue({ ...defaultHookResult, setFilters })
+  it('フォーム送信時に入力値で useBooks が呼ばれる', () => {
     renderPage()
-
     fireEvent.change(screen.getByPlaceholderText('書籍名'), {
       target: { value: 'React' },
     })
@@ -156,81 +145,61 @@ describe('BookListPage', () => {
     })
     fireEvent.submit(screen.getByPlaceholderText('書籍名').closest('form')!)
 
-    expect(setFilters).toHaveBeenCalledWith(
+    expect(mockUseBooks).toHaveBeenCalledWith(
       expect.objectContaining({ title: 'React', author: '山田太郎' }),
     )
   })
 
-  it('検索フィールドが空のとき undefined で setFilters が呼ばれる', () => {
-    const setFilters = vi.fn()
-    mockUseBooks.mockReturnValue({ ...defaultHookResult, setFilters })
+  it('検索フィールドが空のとき useBooks にフィルタなしで呼ばれる', () => {
     renderPage()
-
     fireEvent.submit(screen.getByPlaceholderText('書籍名').closest('form')!)
 
-    expect(setFilters).toHaveBeenCalledWith({
-      title: undefined,
-      author: undefined,
-      publishedBy: undefined,
-    })
+    const lastCall =
+      mockUseBooks.mock.calls[mockUseBooks.mock.calls.length - 1][0]
+    expect(lastCall).not.toHaveProperty('title')
+    expect(lastCall).not.toHaveProperty('author')
+    expect(lastCall).not.toHaveProperty('publishedBy')
   })
 
-  it('マウント時に URL の page パラメータで setPage が呼ばれる', async () => {
-    const setPage = vi.fn()
-    mockUseBooks.mockReturnValue({ ...defaultHookResult, setPage })
+  it('URL の page パラメータが useBooks に渡される', () => {
     renderPage('/books?page=3')
-
-    await waitFor(() => {
-      expect(setPage).toHaveBeenCalledWith(3)
-    })
+    expect(mockUseBooks).toHaveBeenCalledWith(
+      expect.objectContaining({ page: 3 }),
+    )
   })
 
-  it('URL に page パラメータがないとき setPage(1) が呼ばれる', async () => {
-    const setPage = vi.fn()
-    mockUseBooks.mockReturnValue({ ...defaultHookResult, setPage })
+  it('URL に page パラメータがないとき useBooks に page:1 が渡される', () => {
     renderPage('/books')
-
-    await waitFor(() => {
-      expect(setPage).toHaveBeenCalledWith(1)
-    })
+    expect(mockUseBooks).toHaveBeenCalledWith(
+      expect.objectContaining({ page: 1 }),
+    )
   })
 
-  it('URL の page パラメータが無効な値のとき setPage(1) が呼ばれる', async () => {
-    const setPage = vi.fn()
-    mockUseBooks.mockReturnValue({ ...defaultHookResult, setPage })
+  it('URL の page パラメータが無効な値のとき useBooks に page:1 が渡される', () => {
     renderPage('/books?page=abc')
-
-    await waitFor(() => {
-      expect(setPage).toHaveBeenCalledWith(1)
-    })
+    expect(mockUseBooks).toHaveBeenCalledWith(
+      expect.objectContaining({ page: 1 }),
+    )
   })
 
-  it('次へボタンをクリックすると currentPage + 1 で setPage が呼ばれる', async () => {
-    const setPage = vi.fn()
-    mockUseBooks.mockReturnValue({ ...defaultHookResult, setPage })
+  it('次へボタンをクリックすると useBooks に page+1 が渡される', async () => {
     renderPage()
-
     fireEvent.click(screen.getByRole('button', { name: '次へ' }))
-
     await waitFor(() => {
-      expect(setPage).toHaveBeenCalledWith(2)
+      expect(mockUseBooks).toHaveBeenCalledWith(
+        expect.objectContaining({ page: 2 }),
+      )
     })
   })
 
-  it('前へボタンをクリックすると currentPage - 1 で setPage が呼ばれる', async () => {
-    const setPage = vi.fn()
-    mockUseBooks.mockReturnValue({
-      ...defaultHookResult,
-      currentPage: 3,
-      hasPrev: true,
-      setPage,
-    })
-    renderPage()
-
+  it('前へボタンをクリックすると useBooks に page-1 が渡される', async () => {
+    mockUseBooks.mockReturnValue({ ...defaultHookResult, hasPrev: true })
+    renderPage('/books?page=3')
     fireEvent.click(screen.getByRole('button', { name: '前へ' }))
-
     await waitFor(() => {
-      expect(setPage).toHaveBeenCalledWith(2)
+      expect(mockUseBooks).toHaveBeenCalledWith(
+        expect.objectContaining({ page: 2 }),
+      )
     })
   })
 })
