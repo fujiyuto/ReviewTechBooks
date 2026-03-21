@@ -35,7 +35,7 @@ describe('AuthProvider', () => {
     vi.clearAllMocks()
     mockOnAuthStateChange.mockReturnValue({
       data: { subscription: { unsubscribe: mockUnsubscribe } },
-    } as ReturnType<typeof supabase.auth.onAuthStateChange>)
+    } as unknown as ReturnType<typeof supabase.auth.onAuthStateChange>)
   })
 
   it('initializes with isLoading=true and isLoggedIn=false', () => {
@@ -88,14 +88,12 @@ describe('AuthProvider', () => {
     } as Awaited<ReturnType<typeof supabase.auth.getSession>>)
     let authChangeCallback: Parameters<
       typeof supabase.auth.onAuthStateChange
-    >[0] = () => {
-      return { data: { subscription: null } }
-    }
+    >[0] = async () => {}
     mockOnAuthStateChange.mockImplementation((cb) => {
       authChangeCallback = cb
       return {
         data: { subscription: { unsubscribe: mockUnsubscribe } },
-      } as ReturnType<typeof supabase.auth.onAuthStateChange>
+      } as unknown as ReturnType<typeof supabase.auth.onAuthStateChange>
     })
 
     let captured: AuthContextValue | null = null

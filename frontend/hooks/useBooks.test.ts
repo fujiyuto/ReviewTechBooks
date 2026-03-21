@@ -107,7 +107,7 @@ describe('useBooks', () => {
     const { rerender } = renderHook(
       ({ title, page }: { title?: string; page: number }) =>
         useBooks({ title, page }),
-      { initialProps: { title: undefined, page: 2 } },
+      { initialProps: { title: undefined as string | undefined, page: 2 } },
     )
     await waitFor(() => expect(mockFetchBooks).toHaveBeenCalledTimes(1))
 
@@ -122,7 +122,12 @@ describe('useBooks', () => {
     const { rerender } = renderHook(
       ({ title, author }: { title?: string; author?: string }) =>
         useBooks({ title, author }),
-      { initialProps: { title: undefined, author: undefined } },
+      {
+        initialProps: {
+          title: undefined as string | undefined,
+          author: undefined as string | undefined,
+        },
+      },
     )
     await waitFor(() => expect(mockFetchBooks).toHaveBeenCalledTimes(1))
 
