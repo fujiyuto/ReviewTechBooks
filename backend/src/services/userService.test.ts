@@ -16,14 +16,14 @@ describe('UserService', () => {
         userService.registerUser({
           authId: '550e8400-e29b-41d4-a716-446655440000',
           username: 'testuser',
+          biography: 'こんにちわ',
         }),
       ).resolves.toBeUndefined()
 
       expect(mockUserRepository.create).toHaveBeenCalledWith({
         authId: '550e8400-e29b-41d4-a716-446655440000',
         username: 'testuser',
-        lastName: undefined,
-        firstName: undefined,
+        biography: 'こんにちわ',
       })
     })
 

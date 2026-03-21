@@ -31,10 +31,8 @@ export interface paths {
             authId: string
             /** @description ユーザー名 */
             username: string
-            /** @description 名前（姓） */
-            lastName?: string
-            /** @description 名前（名） */
-            firstName?: string
+            /** @description 自己紹介文 */
+            biography?: string
           }
         }
       }

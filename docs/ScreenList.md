@@ -28,6 +28,12 @@ URL: /users/{userId}
 ### ユーザー登録画面
 URL: /users/create
 
+### ユーザー登録画面（メールアドレス）
+URL: /users/create/email
+
+### ユーザー登録時情報入力画面（外部認証使用時）
+URL: /users/onboarding
+
 ### ユーザー情報編集画面
 URL: /users/edit/{userId}
 

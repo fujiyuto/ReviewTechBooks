@@ -28,7 +28,7 @@ export function useRegister(): UseRegisterResult {
 
   /**
    * メールアドレスとパスワードでユーザー登録を行う
-   * 成功時に /books へリダイレクトする
+   * 成功時に /users/onboarding へリダイレクトする
    * @param email - 登録するメールアドレス
    * @param password - 登録するパスワード
    */
@@ -37,7 +37,7 @@ export function useRegister(): UseRegisterResult {
     setIsLoading(true)
     try {
       await signUpWithEmail(email, password)
-      navigate('/books')
+      navigate('/users/onboarding')
     } catch (err) {
       setError(err instanceof Error ? err.message : '登録に失敗しました')
     } finally {
@@ -47,13 +47,13 @@ export function useRegister(): UseRegisterResult {
 
   /**
    * Google OAuth でユーザー登録・ログインを行う
-   * Supabase が Google 認証ページへリダイレクトし、完了後 /books に戻る
+   * Supabase が Google 認証ページへリダイレクトし、完了後 /users/onboarding に戻る
    */
   const registerWithGoogle = async () => {
     setError(null)
     setIsLoading(true)
     try {
-      await signInWithGoogle(`${window.location.origin}/books`)
+      await signInWithGoogle(`${window.location.origin}/users/onboarding`)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Google 登録に失敗しました')
     } finally {

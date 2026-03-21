@@ -10,8 +10,6 @@ erDiagram
         bigint       id              PK "ID"
         uuid         auth_id         UK "Supabase Auth ID"
         varchar(20)  username           "ユーザー名"
-        varchar(50)  last_name          "名前（姓）"
-        varchar(50)  first_name         "名前（名）"
         text         biography          "自己紹介"
         enum         role               "ロール"
         datetime     created_at         "作成日時"

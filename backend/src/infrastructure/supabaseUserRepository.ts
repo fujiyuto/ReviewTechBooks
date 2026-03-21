@@ -5,14 +5,12 @@ export class SupabaseUserRepository implements UserRepository {
   async create(data: {
     authId: string
     username: string
-    lastName?: string
-    firstName?: string
+    biography?: string
   }): Promise<void> {
     const { error } = await supabase.from('users').insert({
       auth_id: data.authId,
       username: data.username,
-      last_name: data.lastName ?? null,
-      first_name: data.firstName ?? null,
+      biography: data.biography ?? null,
     })
 
     if (error) {

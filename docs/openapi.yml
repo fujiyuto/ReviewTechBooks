@@ -30,14 +30,9 @@ paths:
                   type: string
                   maxLength: 20
                   description: ユーザー名
-                lastName:
+                biography:
                   type: string
-                  maxLength: 50
-                  description: 名前（姓）
-                firstName:
-                  type: string
-                  maxLength: 50
-                  description: 名前（名）
+                  description: 自己紹介文
       responses:
         '201':
           description: 登録成功
