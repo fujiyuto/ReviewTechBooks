@@ -7,16 +7,23 @@ vi.mock('@/lib/supabase', () => ({
       signUp: vi.fn(),
       signInWithOAuth: vi.fn(),
       getUser: vi.fn(),
+      signOut: vi.fn(),
     },
   },
 }))
 
-import { signUpWithEmail, signInWithGoogle, updateOnboarding } from '@/api/auth'
+import {
+  signUpWithEmail,
+  signInWithGoogle,
+  updateOnboarding,
+  signOut,
+} from '@/api/auth'
 import { supabase } from '@/lib/supabase'
 
 const mockSignUp = vi.mocked(supabase.auth.signUp)
 const mockSignInWithOAuth = vi.mocked(supabase.auth.signInWithOAuth)
 const mockGetUser = vi.mocked(supabase.auth.getUser)
+const mockSignOut = vi.mocked(supabase.auth.signOut)
 
 /** テスト用の AuthError を作成するヘルパー */
 function makeAuthError(message: string): AuthError {
@@ -162,5 +169,23 @@ describe('updateOnboarding', () => {
     await expect(
       updateOnboarding('テストユーザー', '自己紹介文です'),
     ).rejects.toThrow('サーバーエラー')
+  })
+})
+
+describe('signOut', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('calls supabase.auth.signOut', async () => {
+    mockSignOut.mockResolvedValue({ error: null })
+    await signOut()
+    expect(mockSignOut).toHaveBeenCalled()
+  })
+
+  it('throws error when supabase returns an error', async () => {
+    const mockError = makeAuthError('Sign out failed')
+    mockSignOut.mockResolvedValue({ error: mockError })
+    await expect(signOut()).rejects.toThrow('Sign out failed')
   })
 })

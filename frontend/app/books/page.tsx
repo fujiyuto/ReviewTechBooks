@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { BookCard } from '@/components/features/books/BookCard'
 import { Button } from '@/components/ui/Button'
@@ -8,25 +8,20 @@ import { useBooks, type BooksFilter } from '@/hooks/useBooks'
 /** 書籍一覧ページ */
 export default function BookListPage() {
   const [searchParams, setSearchParams] = useSearchParams()
+  const query = Object.fromEntries(searchParams)
+  const page = query.page ? Number(query.page) : 1
 
-  const {
-    books,
-    total,
-    currentPage,
-    hasNext,
-    hasPrev,
-    isLoading,
-    error,
-    setPage,
-    setFilters,
-  } = useBooks()
+  const { books, total, hasNext, hasPrev, isLoading, error } = useBooks({
+    ...query,
+    page: page ? Number(page) : 1,
+  })
 
-  // URLの page クエリパラメータが変わるたびにフックのページ状態を同期する
-  useEffect(() => {
-    const raw = Number(searchParams.get('page'))
-    const page = Number.isInteger(raw) && raw >= 1 ? raw : 1
-    setPage(page)
-  }, [searchParams])
+  // // URLの page クエリパラメータが変わるたびにフックのページ状態を同期する
+  // useEffect(() => {
+  //   const raw = Number(searchParams.get('page'))
+  //   const page = Number.isInteger(raw) && raw >= 1 ? raw : 1
+  //   setPage(page)
+  // }, [searchParams])
 
   /** フォームの下書き状態 */
   const [draft, setDraft] = useState<BooksFilter>({
@@ -42,14 +37,11 @@ export default function BookListPage() {
    */
   const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setFilters({
-      title: draft.title || undefined,
-      author: draft.author || undefined,
-      publishedBy: draft.publishedBy || undefined,
-    })
-    setSearchParams((prev) => {
-      const next = new URLSearchParams(prev)
-      next.delete('page')
+    setSearchParams(() => {
+      const next = new URLSearchParams()
+      if (draft.title) next.set('title', draft.title)
+      if (draft.author) next.set('author', draft.author)
+      if (draft.publishedBy) next.set('publishedBy', draft.publishedBy)
       return next
     })
   }
@@ -141,17 +133,17 @@ export default function BookListPage() {
           <Button
             variant="outline"
             disabled={!hasPrev}
-            onClick={() => handlePageChange(currentPage - 1)}
+            onClick={() => handlePageChange(page - 1)}
           >
             前へ
           </Button>
           <span className="px-3 text-sm text-text-secondary">
-            {currentPage} ページ
+            {page} ページ
           </span>
           <Button
             variant="outline"
             disabled={!hasNext}
-            onClick={() => handlePageChange(currentPage + 1)}
+            onClick={() => handlePageChange(page + 1)}
           >
             次へ
           </Button>

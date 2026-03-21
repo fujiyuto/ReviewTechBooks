@@ -25,14 +25,6 @@ export interface UseBooksResult {
   isLoading: boolean
   /** エラーメッセージ（正常時は null） */
   error: string | null
-  /** 現在のページ番号 */
-  currentPage: number
-  /** 現在のフィルタ条件 */
-  filters: BooksFilter
-  /** ページを変更する */
-  setPage: (page: number) => void
-  /** フィルタを変更する（ページは 1 にリセットされる） */
-  setFilters: (filters: BooksFilter) => void
 }
 
 /** 1ページあたりの表示件数 */
@@ -42,13 +34,16 @@ const LIMIT = 10
  * 書籍一覧を取得・管理するカスタムフック
  * ページネーションとフィルタ検索をサポートする
  */
-export function useBooks(): UseBooksResult {
+export function useBooks(queryParams: {
+  title?: string
+  author?: string
+  publishedBy?: string
+  page?: number
+}): UseBooksResult {
   /** 取得した書籍一覧 */
   const [books, setBooks] = useState<BookSummary[]>([])
   /** 総件数 */
   const [total, setTotal] = useState(0)
-  /** 現在のページ番号 */
-  const [currentPage, setCurrentPage] = useState(1)
   /** 次ページの有無 */
   const [hasNext, setHasNext] = useState(false)
   /** 前ページの有無 */
@@ -59,11 +54,6 @@ export function useBooks(): UseBooksResult {
   /** エラーメッセージ */
   const [error, setError] = useState<string | null>(null)
 
-  /** リクエストするページ番号 */
-  const [page, setPageState] = useState(1)
-  /** リクエストするフィルタ条件 */
-  const [filters, setFiltersState] = useState<BooksFilter>({})
-
   useEffect(() => {
     let cancelled = false
 
@@ -73,14 +63,12 @@ export function useBooks(): UseBooksResult {
       setError(null)
       try {
         const data = await fetchBooks({
-          ...filters,
-          page,
+          ...queryParams,
           limit: LIMIT,
         })
         if (!cancelled) {
           setBooks(data.books ?? [])
           setTotal(data.total ?? 0)
-          setCurrentPage(data.currentPage ?? 1)
           setHasNext(data.next ?? false)
           setHasPrev(data.prev ?? false)
         }
@@ -104,35 +92,19 @@ export function useBooks(): UseBooksResult {
     return () => {
       cancelled = true
     }
-  }, [page, filters])
-
-  /**
-   * ページを変更する
-   * @param nextPage - 移動先のページ番号
-   */
-  const setPage = (nextPage: number) => {
-    setPageState(nextPage)
-  }
-
-  /**
-   * フィルタ条件を変更する（ページは 1 にリセットされる）
-   * @param nextFilters - 新しいフィルタ条件
-   */
-  const setFilters = (nextFilters: BooksFilter) => {
-    setFiltersState(nextFilters)
-    setPageState(1)
-  }
+  }, [
+    queryParams.title,
+    queryParams.author,
+    queryParams.publishedBy,
+    queryParams.page,
+  ])
 
   return {
     books,
     total,
-    currentPage,
     hasNext,
     hasPrev,
     isLoading,
     error,
-    filters,
-    setPage,
-    setFilters,
   }
 }

@@ -77,7 +77,7 @@ describe('LoginForm', () => {
 
   it('Google でログインボタン押下時', () => {
     renderForm()
-    fireEvent.click(screen.getByText('Google でログイン'))
+    fireEvent.click(screen.getByText('Google で登録'))
     expect(mockLoginWithGoogle).toHaveBeenCalledTimes(1)
   })
 
