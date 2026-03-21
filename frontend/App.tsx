@@ -5,6 +5,8 @@ import BookListPage from '@/app/books/page'
 import BookDetailPage from '@/app/books/[bookId]/page'
 import ReviewCreatePage from '@/app/reviews/create/page'
 import ReviewEditPage from '@/app/reviews/edit/[reviewId]/page'
+import UserOnboardingPage from '@/app/users/onboarding/page'
+import UserCreateEmailPage from '@/app/users/create/email/page'
 import UserCreatePage from '@/app/users/create/page'
 import UserLoginPage from '@/app/users/login/page'
 import UserDetailPage from '@/app/users/[userId]/page'
@@ -26,6 +28,8 @@ export function App() {
           <Route path="/books/:bookId" element={<BookDetailPage />} />
           <Route path="/reviews/create" element={<ReviewCreatePage />} />
           <Route path="/reviews/edit/:reviewId" element={<ReviewEditPage />} />
+          <Route path="/users/onboarding" element={<UserOnboardingPage />} />
+          <Route path="/users/create/email" element={<UserCreateEmailPage />} />
           <Route path="/users/create" element={<UserCreatePage />} />
           <Route path="/users/login" element={<UserLoginPage />} />
           <Route

@@ -53,13 +53,13 @@ describe('useRegister', () => {
     )
   })
 
-  it('navigates to /books after successful registration', async () => {
+  it('navigates to /users/onboarding after successful registration', async () => {
     mockSignUpWithEmail.mockResolvedValue({ user: null, session: null })
     const { result } = renderHook(() => useRegister(), { wrapper })
     await act(async () => {
       await result.current.register('test@example.com', 'password123')
     })
-    expect(mockNavigate).toHaveBeenCalledWith('/books')
+    expect(mockNavigate).toHaveBeenCalledWith('/users/onboarding')
   })
 
   it('sets isLoading=true during registration', async () => {
@@ -98,7 +98,7 @@ describe('useRegister', () => {
       await result.current.registerWithGoogle()
     })
     expect(mockSignInWithGoogle).toHaveBeenCalledWith(
-      `${window.location.origin}/books`,
+      `${window.location.origin}/users/onboarding`,
     )
   })
 

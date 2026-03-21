@@ -10,7 +10,20 @@ import { useRegister } from '@/hooks/useRegister'
 const schema = z
   .object({
     email: z.email('有効なメールアドレスを入力してください'),
-    password: z.string().min(8, 'パスワードは8文字以上で入力してください'),
+    password: z
+      .string()
+      .min(
+        8,
+        '8~64文字で大文字、小文字、数字、特殊文字（!@#等）を1文字以上含めてください',
+      )
+      .max(
+        64,
+        '8~64文字で大文字、小文字、数字、特殊文字（!@#等）を1文字以上含めてください',
+      )
+      .regex(
+        /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{};':",.<>?/]).+$/,
+        '8~64文字で大文字、小文字、数字、特殊文字（!@#等）を1文字以上含めてください',
+      ),
     confirmPassword: z.string(),
   })
   .refine((d) => d.password === d.confirmPassword, {
@@ -19,19 +32,19 @@ const schema = z
   })
 
 /** フォームの入力値の型 */
-type RegisterFormValues = z.infer<typeof schema>
+type RegisterEmailFormValues = z.infer<typeof schema>
 
 /**
- * ユーザー登録フォームコンポーネント
- * メール/パスワード登録と Google OAuth 登録をサポートする
+ * メールアドレスでのユーザー登録フォームコンポーネント
+ * ユーザー名・メール・パスワードを入力して登録する
  */
-export function RegisterForm() {
-  const { isLoading, error, register: registerUser, registerWithGoogle } = useRegister()
+export function RegisterEmailForm() {
+  const { isLoading, error, register: registerUser } = useRegister()
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterFormValues>({
+  } = useForm<RegisterEmailFormValues>({
     resolver: zodResolver(schema),
   })
 
@@ -39,13 +52,15 @@ export function RegisterForm() {
    * フォーム送信ハンドラ
    * @param data - バリデーション済みフォーム入力値
    */
-  const onSubmit = async (data: RegisterFormValues) => {
+  const onSubmit = async (data: RegisterEmailFormValues) => {
     await registerUser(data.email, data.password)
   }
 
   return (
     <div className="mx-auto w-full max-w-md rounded-xl border border-surface-border bg-surface-base p-8 shadow-sm">
-      <h1 className="mb-6 text-2xl font-bold text-text-primary">ユーザー登録</h1>
+      <h1 className="mb-6 text-2xl font-bold text-text-primary">
+        メールアドレスで登録
+      </h1>
 
       {error && (
         <div className="mb-4 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
@@ -54,6 +69,7 @@ export function RegisterForm() {
       )}
 
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+
         <div className="flex flex-col gap-1">
           <label
             htmlFor="email"
@@ -107,38 +123,28 @@ export function RegisterForm() {
             {...register('confirmPassword')}
           />
           {errors.confirmPassword && (
-            <p className="text-sm text-red-600">{errors.confirmPassword.message}</p>
+            <p className="text-sm text-red-600">
+              {errors.confirmPassword.message}
+            </p>
           )}
         </div>
 
-        <Button type="submit" variant="primary" className="w-full" disabled={isLoading}>
+        <Button
+          type="submit"
+          variant="primary"
+          className="w-full"
+          disabled={isLoading}
+        >
           {isLoading ? '登録中...' : '登録する'}
         </Button>
       </form>
 
-      <div className="my-6 flex items-center gap-3">
-        <div className="h-px flex-1 bg-surface-border" />
-        <span className="text-xs text-text-muted">OR</span>
-        <div className="h-px flex-1 bg-surface-border" />
-      </div>
-
-      <Button
-        type="button"
-        variant="outline"
-        className="w-full"
-        disabled={isLoading}
-        onClick={registerWithGoogle}
-      >
-        Google で登録
-      </Button>
-
       <p className="mt-6 text-center text-sm text-text-secondary">
-        すでにアカウントをお持ちの方は{' '}
         <Link
-          to="/users/login"
+          to="/users/create"
           className="text-primary-600 hover:text-primary-700 hover:underline"
         >
-          ログイン
+          他の方法で登録
         </Link>
       </p>
     </div>

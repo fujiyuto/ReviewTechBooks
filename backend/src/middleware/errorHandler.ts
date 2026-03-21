@@ -33,6 +33,8 @@ export class UnauthorizedError extends AppError {
 }
 
 export const errorHandler = (err: Error, c: Context) => {
+  console.log(err.message)
+
   if (err instanceof AppError) {
     return c.json(
       { error: { code: err.code, message: err.message } },

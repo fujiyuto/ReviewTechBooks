@@ -9,6 +9,7 @@ const users = new Hono().basePath('/users')
 
 users.post('/', async (c) => {
   const body = await c.req.json()
+  console.log(body)
   await userService.registerUser(body)
   return c.body(null, 201)
 })

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import type { AuthError } from '@supabase/supabase-js'
 
 vi.mock('@/lib/supabase', () => ({
@@ -6,15 +6,17 @@ vi.mock('@/lib/supabase', () => ({
     auth: {
       signUp: vi.fn(),
       signInWithOAuth: vi.fn(),
+      getUser: vi.fn(),
     },
   },
 }))
 
-import { signUpWithEmail, signInWithGoogle } from '@/api/auth'
+import { signUpWithEmail, signInWithGoogle, updateOnboarding } from '@/api/auth'
 import { supabase } from '@/lib/supabase'
 
 const mockSignUp = vi.mocked(supabase.auth.signUp)
 const mockSignInWithOAuth = vi.mocked(supabase.auth.signInWithOAuth)
+const mockGetUser = vi.mocked(supabase.auth.getUser)
 
 /** テスト用の AuthError を作成するヘルパー */
 function makeAuthError(message: string): AuthError {
@@ -99,5 +101,65 @@ describe('signInWithGoogle', () => {
     await expect(
       signInWithGoogle('http://localhost:3000/books'),
     ).rejects.toThrow('OAuth error')
+  })
+})
+
+describe('updateOnboarding', () => {
+  let mockFetch: ReturnType<typeof vi.fn>
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+    mockFetch = vi.fn()
+    vi.stubGlobal('fetch', mockFetch)
+  })
+
+  afterEach(() => {
+    vi.unstubAllGlobals()
+  })
+
+  it('throws error when user is not found', async () => {
+    mockGetUser.mockResolvedValue({
+      data: { user: null },
+      error: null,
+    })
+    await expect(
+      updateOnboarding('テストユーザー', '自己紹介文です'),
+    ).rejects.toThrow('ユーザー情報の登録に失敗しました')
+  })
+
+  it('sends POST /users with correct body', async () => {
+    const mockUser = { id: 'user-123' }
+    mockGetUser.mockResolvedValue({
+      data: { user: mockUser as never },
+      error: null,
+    })
+    mockFetch.mockResolvedValue({ ok: true })
+    await updateOnboarding('テストユーザー', '自己紹介文です')
+    expect(mockFetch).toHaveBeenCalledWith(
+      expect.stringContaining('/users'),
+      expect.objectContaining({
+        method: 'POST',
+        body: JSON.stringify({
+          authId: 'user-123',
+          username: 'テストユーザー',
+          biography: '自己紹介文です',
+        }),
+      }),
+    )
+  })
+
+  it('throws error when response is not ok', async () => {
+    const mockUser = { id: 'user-123' }
+    mockGetUser.mockResolvedValue({
+      data: { user: mockUser as never },
+      error: null,
+    })
+    mockFetch.mockResolvedValue({
+      ok: false,
+      json: () => Promise.resolve({ message: 'サーバーエラー' }),
+    })
+    await expect(
+      updateOnboarding('テストユーザー', '自己紹介文です'),
+    ).rejects.toThrow('サーバーエラー')
   })
 })
