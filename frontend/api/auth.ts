@@ -81,3 +81,12 @@ export async function signInWithGoogle(redirectTo: string) {
   if (error) throw error
   return data
 }
+
+/**
+ * ログアウトを行う
+ * @throws ログアウトに失敗した場合にエラーをスロー
+ */
+export async function signOut() {
+  const { error } = await supabase.auth.signOut()
+  if (error) throw error
+}
