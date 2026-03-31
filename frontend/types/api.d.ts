@@ -53,7 +53,7 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  '/api/users/{userId}': {
+  '/api/users/{username}': {
     parameters: {
       query?: never
       header?: never
@@ -66,7 +66,7 @@ export interface paths {
         query?: never
         header?: never
         path: {
-          userId: components['parameters']['UserId']
+          username: components['parameters']['Username']
         }
         cookie?: never
       }
@@ -92,7 +92,7 @@ export interface paths {
         query?: never
         header?: never
         path: {
-          userId: components['parameters']['UserId']
+          username: components['parameters']['Username']
         }
         cookie?: never
       }
@@ -123,7 +123,7 @@ export interface paths {
         query?: never
         header?: never
         path: {
-          userId: components['parameters']['UserId']
+          username: components['parameters']['Username']
         }
         cookie?: never
       }
@@ -132,10 +132,6 @@ export interface paths {
           'application/json': {
             /** @description ユーザー名 */
             username?: string
-            /** @description 名前（姓） */
-            lastName?: string
-            /** @description 名前（名） */
-            firstName?: string
             /** @description 自己紹介 */
             biography?: string
           }
@@ -158,7 +154,7 @@ export interface paths {
     }
     trace?: never
   }
-  '/api/users/{userId}/reviews': {
+  '/api/users/{username}/reviews': {
     parameters: {
       query?: never
       header?: never
@@ -174,7 +170,7 @@ export interface paths {
         }
         header?: never
         path: {
-          userId: components['parameters']['UserId']
+          username: components['parameters']['Username']
         }
         cookie?: never
       }
@@ -189,8 +185,6 @@ export interface paths {
             'application/json': {
               reviews?: components['schemas']['UserReview'][]
               total?: number
-              page?: number
-              limit?: number
               /** @description 次のページが存在するか */
               next?: boolean
               /** @description 前のページが存在するか */
@@ -243,11 +237,8 @@ export interface paths {
           content: {
             'application/json': {
               books?: components['schemas']['BookSummary'][]
+              /** @description 総データ数 */
               total?: number
-              currentPage?: number
-              /** @description 総ページ数 */
-              totalPages?: number
-              limit?: number
               /** @description 次のページが存在するか */
               next?: boolean
               /** @description 前のページが存在するか */
@@ -544,8 +535,6 @@ export interface components {
       /** Format: int64 */
       id?: number
       username?: string
-      lastName?: string
-      firstName?: string
       biography?: string
       /** @enum {string} */
       role?: 'free' | 'premium'
@@ -622,7 +611,7 @@ export interface components {
     Category: {
       id?: number
       name?: string
-      order?: number
+      sortOrder?: number
     }
     Error: {
       message?: string
@@ -675,7 +664,7 @@ export interface components {
     Author: string
     /** @description 出版社名 */
     PublishedBy: string
-    UserId: number
+    Username: string
     BookId: number
     ReviewId: number
     /** @description カテゴリIDによる絞り込み */

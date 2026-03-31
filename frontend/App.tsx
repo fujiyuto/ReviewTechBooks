@@ -10,7 +10,8 @@ import UserOnboardingPage from '@/app/users/onboarding/page'
 import UserCreateEmailPage from '@/app/users/create/email/page'
 import UserCreatePage from '@/app/users/create/page'
 import UserLoginPage from '@/app/users/login/page'
-import UserDetailPage from '@/app/users/[userId]/page'
+import UserDetailPage from '@/app/users/[username]/page'
+import UserReviewsPage from '@/app/users/[username]/reviews/page'
 import UserEditPage from '@/app/users/edit/[userId]/page'
 import PasswordResetMailSendPage from '@/app/users/password/reset/mail/send/page'
 import PasswordResetFormPage from '@/app/users/password/reset/form/page'
@@ -57,7 +58,11 @@ export function App() {
               element={<EmailResetFormPage />}
             />
             <Route path="/confirm/email" element={<EmailConfirmPage />} />
-            <Route path="/users/:userId" element={<UserDetailPage />} />
+            <Route
+              path="/users/:username/reviews"
+              element={<UserReviewsPage />}
+            />
+            <Route path="/users/:username" element={<UserDetailPage />} />
             <Route path="/users/edit/:userId" element={<UserEditPage />} />
           </Routes>
         </main>

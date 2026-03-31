@@ -22,6 +22,12 @@ URL: /reviews/create
 ### レビュー編集画面
 URL: /reviews/edit/{reviewId}
 
+### ユーザーレビュー一覧画面
+URL: /users/{userId}/reviews
+
+### 技術書レビュー一覧画面
+URL: /books/{bookId}/reviews
+
 ### ユーザー詳細画面
 URL: /users/{userId}
 
