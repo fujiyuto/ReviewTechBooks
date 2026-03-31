@@ -1,20 +1,10 @@
 import { useState, useEffect } from 'react'
-import { fetchBooks, type BookSummary } from '@/api/books'
+import { fetchUserReviews, type UserReview } from '@/api/users'
 
-/** 書籍一覧のフィルタ条件 */
-export interface BooksFilter {
-  /** 書籍名（部分一致） */
-  title?: string
-  /** 著者名（部分一致） */
-  author?: string
-  /** 出版社名（部分一致） */
-  publishedBy?: string
-}
-
-/** useBooks フックの戻り値 */
-export interface UseBooksResult {
-  /** 取得した書籍一覧 */
-  books: BookSummary[]
+/** useUserReviews フックの戻り値 */
+export interface UseUserReviewsResult {
+  /** 取得したレビュー一覧 */
+  reviews: UserReview[]
   /** 総件数 */
   total: number
   /** 次ページが存在するか */
@@ -31,22 +21,24 @@ export interface UseBooksResult {
 const LIMIT = 10
 
 /**
- * 書籍一覧を取得・管理するカスタムフック
- * ページネーションとフィルタ検索をサポートする
+ * ユーザーのレビュー一覧を取得・管理するカスタムフック
+ * @param username - ユーザー名
+ * @param queryParams - クエリパラメータ（page: ページ番号、limit: 1ページあたりの表示件数）
  */
-export function useBooks(queryParams: {
-  title?: string
-  author?: string
-  publishedBy?: string
-  page?: number
-}): UseBooksResult {
-  /** 取得した書籍一覧 */
-  const [books, setBooks] = useState<BookSummary[]>([])
+export function useUserReviews(
+  username: string,
+  queryParams?: { page?: number; limit?: number },
+): UseUserReviewsResult {
+  const page = queryParams?.page ?? 1
+  const limit = queryParams?.limit ?? LIMIT
+
+  /** レビュー一覧 */
+  const [reviews, setReviews] = useState<UserReview[]>([])
   /** 総件数 */
   const [total, setTotal] = useState(0)
-  /** 次ページの有無 */
+  /** 次ページフラグ */
   const [hasNext, setHasNext] = useState(false)
-  /** 前ページの有無 */
+  /** 前ページフラグ */
   const [hasPrev, setHasPrev] = useState(false)
   /** フェッチ中フラグ */
   const [isLoading, setIsLoading] = useState(true)
@@ -56,17 +48,13 @@ export function useBooks(queryParams: {
   useEffect(() => {
     let cancelled = false
 
-    /** 書籍一覧をフェッチする */
     const load = async () => {
       setIsLoading(true)
       setError(null)
       try {
-        const data = await fetchBooks({
-          ...queryParams,
-          limit: LIMIT,
-        })
+        const data = await fetchUserReviews(username, { page, limit })
         if (!cancelled) {
-          setBooks(data.books ?? [])
+          setReviews(data.reviews ?? [])
           setTotal(data.total ?? 0)
           setHasNext(data.next ?? false)
           setHasPrev(data.prev ?? false)
@@ -91,15 +79,10 @@ export function useBooks(queryParams: {
     return () => {
       cancelled = true
     }
-  }, [
-    queryParams.title,
-    queryParams.author,
-    queryParams.publishedBy,
-    queryParams.page,
-  ])
+  }, [username, page, limit])
 
   return {
-    books,
+    reviews,
     total,
     hasNext,
     hasPrev,

@@ -16,13 +16,6 @@ export default function BookListPage() {
     page: page ? Number(page) : 1,
   })
 
-  // // URLの page クエリパラメータが変わるたびにフックのページ状態を同期する
-  // useEffect(() => {
-  //   const raw = Number(searchParams.get('page'))
-  //   const page = Number.isInteger(raw) && raw >= 1 ? raw : 1
-  //   setPage(page)
-  // }, [searchParams])
-
   /** フォームの下書き状態 */
   const [draft, setDraft] = useState<BooksFilter>({
     title: '',

@@ -137,7 +137,7 @@ export function LoginForm() {
             </svg>
           </div>
           <div>
-            <span>Google で登録</span>
+            <span>Google でログイン</span>
           </div>
         </div>
       </Button>

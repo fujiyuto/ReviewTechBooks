@@ -55,7 +55,7 @@ erDiagram
         int          id              PK "ID"
         int          category_type_id FK "カテゴリ種別ID"
         varchar(50)  name               "カテゴリ名"
-        int          order              "並び順"
+        int          sort_order              "並び順"
         datetime     created_at         "作成日時"
         datetime     updated_at         "更新日時"
     }

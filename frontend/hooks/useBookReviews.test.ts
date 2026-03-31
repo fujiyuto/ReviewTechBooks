@@ -210,8 +210,8 @@ it('ページ更新時', async () => {
   // 1ページ → 2ページ目に更新
   result.current.setPage(result.current.currentPage + 1)
 
-  // 2ページ目のデータ取得まで待機
-  await waitFor(() => expect(result.current.isLoading).toBe(false))
+  // 2ページ目のデータ取得まで待機（currentPageが2になるまで待つ）
+  await waitFor(() => expect(result.current.currentPage).toBe(2))
 
   // 2ページ目の検証
   expect(result.current.reviews).toEqual(baseResponse2.reviews)
